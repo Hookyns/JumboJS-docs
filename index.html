@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="icon" href="./images/jumbo.ico">
+
+	<script src="scripts/jquery-3.1.1.min.js"></script>
+	<script src="scripts/highlight.pack.js"></script>
+	<script src="scripts/highlightjs-line-numbers.min.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad();
+		hljs.initLineNumbersOnLoad();
+
+		function toggleMenu() {
+			$("nav").toggle(300);
+		}
+
+		function gotoFold(el, event) {
+			event = event || window.event;
+			event.preventDefault();
+
+			$("body").animate({
+				scrollTop: $(el.href.slice(el.href.lastIndexOf("#"))).offset().top - 80
+			});
+
+			return false;
+		}
+
+		$(function () {
+			$("a").each(function (i, el) {
+				if (el.href.indexOf("#") == -1) return;
+				$(el).attr("onclick", "gotoFold(this);");
+			});
+		});
+	</script>
+
+	<link rel="stylesheet" href="styles/agate.css">
+	<link rel="stylesheet" href="default.css">
+
+	<style>
+		.hljs-line-numbers {
+			text-align: right;
+			border-right: 1px solid #ccc;
+			color: #999;
+			user-select: none;
+		}
+	</style>
+
+	<title>Jumbo Documentation</title>
+</head>
+<body>
+<header>
+	<img src="images/jumbo.png">
+	<h1>Jumbo</h1>
+
+	<div class="aside-nav">
+		<ul>
+			<li><a href="">Home</a></li>
+			<li><a href="">Examples</a></li>
+			<li><a href="">GIT</a></li>
+		</ul>
+	</div>
+</header>
+
+<div class="side-nav">
+	<div class="mobile-menu-button" onclick="toggleMenu();"></div>
+	<nav>
+		<aside class="mobile-aside-nav">
+			<ul>
+				<li><a href="">Home</a></li>
+				<li><a href="">Examples</a></li>
+				<li><a href="">GIT</a></li>
+			</ul>
+		</aside>
+
+		<ul id="doc-nav">
+			<li>
+				<a href="#fold-introduction">Introduction</a>
+
+				<ul>
+					<li><a href="#fold-about-jumbo">About Jumbo</a></li>
+					<li><a href="#fold-MVC">MVC pattern</a></li>
+					<li><a href="#fold-IoC">IoC principle</a></li>
+					<li><a href="#fold-ORM">ORM technique</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#fold-getting-started">Getting Started</a>
+
+				<ul>
+					<li><a href="#fold-node-and-npm">Node.js and Npm</a></li>
+					<li><a href="#fold-installation">Installation</a></li>
+					<li><a href="#fold-project-structure">Project structure</a></li>
+					<li><a href="#fold-namespaces">Namespaces</a></li>
+					<li><a href="#fold-configuration">Configuration</a></li>
+					<li><a href="#fold-routing">Routing</a></li>
+					<li><a href="#fold-controllers">Controllers</a></li>
+					<li><a href="#fold-dependency-injection">Dependency Injection</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#fold-api">API</a>
+
+				<ul>
+					<li><a href="#fold-adapters">Adaters</a></li>
+					<li><a href="#fold-api-application">Application</a></li>
+					<li><a href="#fold-base">Base</a></li>
+					<li><a href="#fold-api-ioc">Ioc</a></li>
+					<li><a href="#fold-logging">Logging</a></li>
+					<li><a href="#fold-validation">Validation</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#fold-packages">Packages</a>
+
+				<ul>
+					<li><a href="#fold-jumplate">Jumplate</a></li>
+					<li><a href="#fold-jumbo-entity">Jumbo Entity</a></li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+</div>
+
+<main>
+	<section>
+		<h1 id="fold-introduction">Introduction</h1>
+
+		<section>
+			<h2 id="fold-about-jumbo">About Jumbo</h2>
+			<p>
+				Jumbo is fast modern enterprise level modular MVC framework for Node.js which focuses on bigger
+				applications
+				which needs stable massive structure; but it still stays quite thin enough for smaller applications.
+
+				...
+			</p>
+
+			<h3>Main Features of Jumbo</h3>
+			<ul>
+				<li>No requires! Global lazy-loading namespace exists,</li>
+				<li>integrated Node.js clustering - multi core / CPU support,</li>
+				<li>advanced variable routing system (just one route for most apps),</li>
+				<li>integrated Inversion of Control - constructor Dependency Injection,</li>
+				<li>code can be changed while runtime,</li>
+				<li>unexpected errors are catched and logged. Then process is restarted,</li>
+				<li>fully configurable logging with log levels,</li>
+				<li>subdomains! More "modules" in one application accessible via subdomains,</li>
+				<li>a lot of things integrated but changeable thanks to Adapters,</li>
+				<li>code-first ORM with migrations,</li>
+				<li>sessions stored on disk and in memory for faster access,</li>
+				<li>integrated email sender,</li>
+				<li>native async & await support,</li>
+				<li>low dependecy - just few packages from 3rd party, it means that everything is made right for
+					Jumbo.
+				</li>
+			</ul>
+
+			<h3>Framework structure</h3>
+			<p>
+				In the picture below you can see basic framework structure and data flow. Some things are abstracted and
+				joined
+				to keep diagram clear.
+			</p>
+			<div class="center-content">
+				<a href="./images/Jumbo-structure-and-data-flow-hr.png"><img
+						src="./images/Jumbo-structure-and-data-flow-hr.png" width="90%" style="max-width: 1200px;"></a>
+			</div>
+		</section>
+
+		<section>
+			<h2 id="fold-MVC">MVC</h2>
+			<p>
+				MVC is one of the architectural pattern which split application into three logical layers which ...
+			</p>
+			<p style="color: #888">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non varius neque,
+				in sollicitudin mauris. Etiam vehicula libero finibus luctus iaculis.
+				Suspendisse interdum leo lacus, ac pharetra nisl iaculis vel. Mauris varius pretium augue,
+				efficitur sagittis lacus blandit non. Nunc vel sodales felis, quis efficitur nibh.
+				In tempus, sem a molestie interdum, sapien odio aliquam enim, sit amet ornare
+				metus lectus eget augue. Fusce metus nisi, interdum quis velit id, semper pharetra leo.
+				Nulla sed accumsan lorem. Proin eleifend dictum massa, ac vulputate ex dapibus et.
+			</p>
+		</section>
+
+		<section>
+			<h2 id="fold-IoC">IoC</h2>
+			<p>
+				IoC stands for Inversion of Control. It is type of approach which tells ...
+			</p>
+			<p style="color: #888">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non varius neque,
+				in sollicitudin mauris. Etiam vehicula libero finibus luctus iaculis.
+				Suspendisse interdum leo lacus, ac pharetra nisl iaculis vel. Mauris varius pretium augue,
+				efficitur sagittis lacus blandit non. Nunc vel sodales felis, quis efficitur nibh.
+				In tempus, sem a molestie interdum, sapien odio aliquam enim, sit amet ornare
+				metus lectus eget augue. Fusce metus nisi, interdum quis velit id, semper pharetra leo.
+				Nulla sed accumsan lorem. Proin eleifend dictum massa, ac vulputate ex dapibus et.
+			</p>
+		</section>
+
+		<section>
+			<h2 id="fold-ORM">ORM</h2>
+			<p>
+				ORM stands for Object Relational Mapping. ORM is some layer which cover basic relational database
+				with objectve wraps over it........
+			</p>
+			<p style="color: #888">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non varius neque,
+				in sollicitudin mauris. Etiam vehicula libero finibus luctus iaculis.
+				Suspendisse interdum leo lacus, ac pharetra nisl iaculis vel. Mauris varius pretium augue,
+				efficitur sagittis lacus blandit non. Nunc vel sodales felis, quis efficitur nibh.
+				In tempus, sem a molestie interdum, sapien odio aliquam enim, sit amet ornare
+				metus lectus eget augue. Fusce metus nisi, interdum quis velit id, semper pharetra leo.
+				Nulla sed accumsan lorem. Proin eleifend dictum massa, ac vulputate ex dapibus et.
+			</p>
+		</section>
+	</section>
+
+	<section>
+		<h1 id="fold-getting-started">Getting Started</h1>
+
+		<section>
+			<h2 id="fold-node-and-npm">Node.js and Npm</h2>
+
+			<p>
+				<strong>Jumbo</strong> is built upon <strong>Node.js</strong> so you need
+				<a target="_blank" href="http://nodejs.org">Node.js</a> in version
+				<a target="_blank" href="http://nodejs.org/en/download/current/">v7.7.x</a> or higher and its package
+				manager <strong>npm</strong>.
+			</p>
+
+			<!--<h3>What is Node.js?</h3>-->
+			<blockquote>
+				Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.
+				Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.
+				Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
+				(taken from <a target="_blank" href="http://nodejs.org">nodejs.org</a>)
+			</blockquote>
+		</section>
+
+		<section>
+			<h2 id="fold-installation">Installation</h2>
+			<p>
+				The best way how to start with <strong>Jumbo</strong> is to install <strong>jumbo-developer</strong>
+				package and use it to create new project.
+
+				So first install <strong>jumbo-developer</strong> via <strong>npm</strong>
+				<span class="inline-code">npm install jumbo-developer -g</span>.
+			</p>
+			<p>
+				Now you can create your first project. Enable <strong>jumbo-developer</strong>, type
+				<span class="inline-code">jumbo-developer</span> to console / terminal and developer tool should start.
+
+				First you must specify your project location, it'll do nothing, it just save your location and all
+				future
+				actions will be processed over that location.
+
+				Then you should finally create your project. Type <span class="inline-code">create project</span>, and
+				your first
+				project should be created in directory you specified.
+			</p>
+			<p>
+				Now you should run your application. Go to your project directory and run it via
+				<span class="inline-code">node app.js</span>. Your application should run on address
+				<em>http://127.0.0.1</em>.
+			</p>
+			<blockquote>
+				If you want to use framework's subdomains, you should edit your local hosts file and add
+				some domain for your application.
+			</blockquote>
+		</section>
+
+		<section>
+			<h2 id="fold-project-structure">Project Structure</h2>
+			<pre>
+    - adapters <span class="hljs-comment"># Adapters for components</span>
+    - app <span class="hljs-comment"># Your main folder</span>
+        - controllers <span class="hljs-comment"># Place controllers here</span>
+        - models <span class="hljs-comment"># Place models here</span>
+        - services <span class="hljs-comment"># Place services here</span>
+        - sub-apps <span class="hljs-comment"># Folder for subapps which will be accessible via subdomains</span>
+            - Example <span class="hljs-comment"># Subdomain name</span>
+                - controllers
+                - models
+                - ...
+        - templates <span class="hljs-comment"># Place view templates here</span>
+        - tests <span class="hljs-comment"># Folder for tests</span>
+        - validators <span class="hljs-comment"># Validators for models</span>
+    - bootstrap <span class="hljs-comment"># Folder for init script (registering routes, dependency, etc.)</span>
+    - data
+        - errors <span class="hljs-comment"># Error HTML pages</span>
+        - logs <span class="hljs-comment"># Logs are saved here</span>
+        - uploads <span class="hljs-comment"># All uploaded files are placed here</span>
+    - public <span class="hljs-comment"># Everything inside is accessible at /public/</span>
+        - images
+        - scripts
+        - styles <span class="hljs-comment"># Styles; .less files are compiled automatically</span>
+    - temp
+        - cache <span class="hljs-comment"># Cached templates</span>
+        - session <span class="hljs-comment"># Data saved to sessions</span>
+    - app.js <span class="hljs-comment"># Main script</span>
+    - config.js <span class="hljs-comment"># App configuration</span>
+            </pre>
+		</section>
+
+		<section>
+			<h2 id="fold-namespaces">Namespaces</h2>
+			<p>
+				In Jumbo there is no need to use requires or some other kind of importing.
+				Yes, you must require Node.js modules or your custom 3rd party stuff but framework classes
+				are autoloaded to global namespaces.
+			</p>
+			<p>
+				There are global Objects <strong>Jumbo</strong> and <strong>App</strong>.
+				These Objects contain all classes from framework which are autoloaded when you start app.
+				These Objects create namespaces and structure of namespaces is copied from folder structure.
+				Namespace Jumbo aims to framework core. Namespace App aims to folder /app/.
+				Eg. <b>/app/controllers/HomeController.class</b> file is accessible via <b>App.Controllers.HomeController</b>.
+			</p>
+			<p>
+				Classes in namespaces are defined as getters and are required just in time so global namespaces are
+				lazy.
+				Inside getters there is require() call so after first get it's cached thanks to require cache.
+			</p>
+		</section>
+
+		<section>
+			<h2 id="fold-configuration">Configuration</h2>
+			<p>
+				For basic configuration there is file /config.js. It's JS file which allows using
+				enums and IDE's completition. So while configuring you'll see all possible values for given properties.
+			</p>
+
+			<section>
+				<h3>Default Config File</h3>
+				<article class="code">
+					<h1>config.js</h1>
+					<pre><code>const $cfg = require("jumbo-core/config");
+
+/**
+ * @namespace ApplicationConfig
+ */
+var applicationConfig = {
+	/**
+	 * Used for styles of Error reporting
+	 * In development mode Errors will be shown in browser
+	 * (browser errors not implemented yet) and in console.
+	 * In production mode Errors will be logged just to file if log enabled
+	 */
+	deployment: $cfg.Deployment.Development,
+
+	/**
+	 * Protocol setting
+	 * If you set HTTPS protocol specify privateKey and certificate paths
+	 */
+	protocol: {
+		/**
+		 * @default Http
+		 */
+		protocol: $cfg.Protocols.Http,
+
+		/**
+		 * Private key path
+		 */
+		privateKey: "data/private.key",
+
+		/**
+		 * Certificate path
+		 */
+		certificate: "data/certificate.crt",
+
+		/**
+		 * Or just PFX archive certificate
+		 */
+		pfx: "",
+
+		/**
+		 * Certifice passphrase
+		 */
+		passphrase: null
+	},
+
+	/**
+	 * Multi-core support
+	 */
+	clustering: {
+		/**
+		 * 0 for automatic clustering driven by number of CPU's cores
+		 * @default 1
+		 */
+		numberOfWorkers: 1
+	},
+
+	/**
+	 * Enable template cache and define storage type (and limit)
+	 */
+	cache: {
+		/**
+		 * @default true
+		 */
+		enabled: true,
+
+		/**
+		 * @default HardDrive
+		 */
+		storage: $cfg.Cache.HardDrive,
+
+		/**
+		 * If you use InMemory cache, this is the size limit
+		 * @default 20 MB
+		 */
+		memoryCacheSizeLimit: 20e6
+	},
+
+	/**
+	 * Enable log and set log level
+	 */
+	log: {
+		/**
+		 * @default true
+		 */
+		enabled: true,
+
+		/**
+		 * @default Talkative
+		 */
+		level: $cfg.LogLevels.Normal
+	},
+
+	/**
+	 * Enable running tests before application start
+	 * Not implemented yet
+	 * @default true
+	 */
+	doTestsAfterRun: false,
+
+	/**
+	 * Maximal allowed number of requests per second. You can limit server stress.
+	 * If more than specified request count will come, new requests in rest of
+	 * one second obtain 429 code. Static files are counted into this number of requests
+	 * @default 1000
+	 * @type { Number || null }
+	 */
+	maxRequestPerSecond: 1000,
+
+	/**
+	 * Enable prevention of (D)DOS attacks
+	 * It internally enable requests monitoring which will count number of requests per IP.
+	 * If IP makes more request per second new requests from that IP will be refused with code 403.
+	 * Requests will be still accepted by server but framework will refuse to continue
+	 * and save resources which proccessing of that request can framework take.
+	 */
+	DOSPrevention: {
+		/**
+		 * @default true
+		 */
+		enabled: true,
+
+		/**
+		 * If you use framework static server and your index page have
+		 * more than 100 links (scripts, styles, images etc.) client will be blocked!
+		 * @default 100
+		 */
+		maxRequestPerIP: 100,
+
+		/**
+		 * Duration of IP blocking [in seconds]
+		 * @default 3600
+		 */
+		blockTime: 3600
+	},
+
+	/**
+	 * Maximal size of POST data
+	 * @default 5 MB
+	 */
+	maxPostDataSize: 5e6,
+
+	/**
+	 * For debuging; disable clustering and run app in one debugable process
+	 */
+	debugMode: false,
+
+
+	// You can define your own settings here,.. it'll be available via Jumbo.Config
+};
+
+module.exports = applicationConfig;</code></pre>
+				</article>
+			</section>
+
+			<section>
+				<h3>Handlers</h3>
+				<p>
+					Handlers are proprties in framework's classes which allow you to change some behavior.
+					It's next level of configuration.
+				</p>
+
+				<section>
+					<h4>* : Jumbo.Application.Application.blockIpListener
+						<small> : blockIpListener</small>
+					</h4>
+					<p><em>Instance field</em></p>
+					<p>
+						You can handle IP blocking when IP / request / sec limit reached. You can block this IP in
+						firewall or you can do whatever you want.
+					</p>
+
+					<section class="method">
+						<h5>
+							<small>callback</small>
+							blockIpListener(blockedIP)
+						</h5>
+						<b>Params</b>
+						<ul>
+							<li><b>blockedIP : String</b></li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<h4>Jumbo.Loger.Log.logFunction
+						<small> : logFunctionHandler</small>
+					</h4>
+					<p><em>Static field</em></p>
+					<p>
+						You can handle IP blocking when IP / request / sec limit reached. You can block this IP in
+						firewall or you can do whatever you want.
+					</p>
+
+					<section class="method">
+						<h5>
+							<small>callback</small>
+							logFunctionHandler(message, type)
+						</h5>
+						<b>Params</b>
+						<ul>
+							<li><b>message : String</b></li>
+							<li><b>type : String</b></li>
+						</ul>
+					</section>
+				</section>
+			</section>
+
+			<section>
+				<h3>Default application script</h3>
+				<article class="code">
+					<h1>app.js</h1>
+					<pre><code>/**
+ * Application inital script
+ */
+
+// Get application from jumbo-core
+var loader = require("jumbo-core");
+
+/**
+ * @type {Jumbo.Application.Application}
+ */
+var application = loader.application;
+
+// Call route config for registering locations
+require("./bootstrap/locator-config")(application.getLocator());
+
+// Call DI registrar
+require("./bootstrap/di-registrar")(application.getDIContainer());
+
+// Register application for run at port 80; It'll run after framework do all async jobs
+application.runWhenReady(80, function() {
+	// You can do something after start
+});</code></pre>
+				</article>
+			</section>
+
+		</section>
+
+		<section>
+			<h2 id="fold-routing">Routing</h2>
+			<p>
+				Jumbo has advanced routing system (called <strong>Locator</strong>) which allows you to define
+				powerful dynamic routes (<strong>locations</strong>).
+				In base project there is file <b>/bootstrap/locator-config.js</b> where locations are registered.
+			</p>
+			<p>
+				See API: Application: <a href="#fold-api-application-locator">Locator</a> for more information.
+			</p>
+
+			<section>
+				<h3>Locator config</h3>
+				<article class="code">
+					<h1>/bootstrap/locator-config.js</h1>
+					<pre><code>/**
+ * Locator configuration - setting host, sub-domains and locations
+ * @param {Jumbo.Application.Locator} locator
+ */
+module.exports = function(locator) {
+	// Default sub-domain which will route to base app;
+	// both urls with and without www will work
+	locator.setMainSubdomain("www");
+
+	// Create admin.yourdomain.tld which will route to /app/sub-apps/admin
+	locator.addSubdomain("admin");
+
+	// Allows you to change url delimiter from "/" to whatever you want
+	// In this case "-" gonna be used, eg. /controllerexample-actionname-foo?bar=5&baz=0
+	// But you still define locations with "/"
+	locator.setDelimiter("-");
+
+	// example; rewrite action name; limit id with RegExp
+	locator.addLocation("locationName", "$controller/delete/$id", {
+		"action": "deleteEntity",
+		"$id": /[0-9]+/
+	});
+
+	// example2; specific URL pointing to HomeController.actionIndex
+	// with optional parameter foo limited with RegExp
+	locator.addLocation("locationName2", "Specific-url-what-ever-you-want[/$foo]", {
+		"$foo": /[0-9]+/,
+		"controller": "Home", // custom specific controller name
+		"action": "index" // action name
+	});
+
+	// Default route - let it last
+	// Variable controller, variable action, optional parameter id
+	locator.addLocation("default", "$controller[/$action[/$id]]");
+};</code></pre>
+				</article>
+			</section>
+		</section>
+
+		<section>
+			<h2 id="fold-controllers">Controllers</h2>
+			<p>
+				Controllers are some kind of entry points to your application. Controller's methods,
+				which should be accessible from web, are called <strong>actions</strong> and must begin with word
+				"action".
+				This word tells framework you want let clients access this method from browser.
+			</p>
+
+			<p>
+				Controllers must be placed in <span class="inline-code">/app/controllers/</span>.
+				Name convention is PascalCase and name must ends with "Controller".
+				Extension of files should be <span class="inline-code">.class</span> but it's not required.
+				Controller shuld be ES2015 class and must be exported from module.
+			</p>
+
+			<blockquote>
+				Default controller name is <strong>HomeController</strong> and default action name is
+				<strong>actionIndex</strong>. Default action or controller name means that those names aren't used in
+				URL.
+				So yourweb.tld/ points to HomeController::actionIndex(). If you use long format URL with default names
+				you'll be redirected to short format URL.
+			</blockquote>
+
+			<blockquote>
+				If some method in framework requires controller or action name, it's its name but without keyword.
+				Eg. ExampleController's name is <strong>Example</strong>; actionLogout's name is <strong>logout</strong>.
+			</blockquote>
+
+			<h3>Actions</h3>
+			<p>
+				What actions are is written in paragraphs above. Name convention is lowerCamelCase and name must
+				starts with word "action". Actions should be async (ES7) but it is not required because actions
+				not return results but call one of the returning method.
+			</p>
+
+			<blockquote>
+				In the future action's prefixes "getAction", "postAction", "deleteAction", etc. will be implemented,
+				this prefixes will limit http method. It means that eg. getActionExample() (/controller/example/)
+				will be accessible only with GET method.
+			</blockquote>
+
+			<h3>Returning methods</h3>
+			<p>
+				Returning methods are methods implemented in class <strong>Jumbo.Base.Controller</strong> and
+				these methods end requests and return data or errors. See API: Base:
+				<a href="#fold-base-controller">Controller</a>.
+			</p>
+
+			<h3>Example Controller</h3>
+			<article class="code">
+				<h1>Example of controller</h1>
+				<pre><code>/**
+ * // TODO: Describe your controller
+ * @class ExampleController
+ * @memberOf App.Controllers
+ */
+class ExampleController extends App.Controllers.BaseController {
+	/**
+	 * Default view action
+	 */
+	async actionIndex() {
+		this.done();
+	}
+}
+
+module.exports = ExampleController;</code></pre>
+			</article>
+
+			<h3>Sequence diagram</h3>
+			<p>
+				There is some sequence diagram which show you how are actions called in controllers.
+			</p>
+			<div class="center-content">
+				<a href="./images/Jumbo-controller-sequence.png">
+					<img src="./images/Jumbo-controller-sequence.png" width="90%" style="max-width: 1200px;">
+				</a>
+			</div>
+			<p>
+				When request from client comes to server, Application handle that, verify request target and do some
+				other stuff.
+				Then if everything is ok, Application let ControllerFactory create ExampleController instance for given
+				request.
+			</p>
+			<p>
+				When instance of ExampleController is created, initController() method is called and
+				request, sessions, controllerCallback and diScope parameters are set to controller.
+			</p>
+			<p>
+				Now it's time for calling action. But first there are beforeActions() methods
+				(one in BaseController and one in ExampleController) which you can use to verify user or initialize
+				something.
+				First beforeActions() in BaseController is called, then in ExampleController. You should call
+				one of the returning methods to stop action calling chain in both beforeActions() methods.
+			</p>
+		</section>
+
+		<section>
+			<h2 id="fold-dependency-injection">Dependency Injection</h2>
+			<p>
+				In <strong>Jumbo</strong> there is implemented <strong>constructor injection</strong> which allows you
+				to
+				obtain instances of your services in constructors. For example you have UserAuthService service
+				which do some user auth stuff. You want instance of this service in controller so you must create
+				its instance but UserAuthService need eg. 3 next services or some other class's instances.
+				Without DI you must create all on your own. With DI, you just register your services and that's all.
+				You write service name as parameter of constructor and framework resolve its instance for you.
+			</p>
+
+			<blockquote>
+				Example codes are just examples.
+			</blockquote>
+
+			<section>
+				<h3>Example without DI</h3>
+
+				<p>In this example, you must create instance of each class on your own. If you have 10 controllers,
+				with same or similar dependencies, you must write more than two hundred lines of code.</p>
+
+				<article class="code">
+					<h1>ExampleController.class</h1>
+					<pre><code>class ExampleController {
+	constructor() {
+		this.userAuthService = new App.Services.UserAuthService(
+			new UserRepository(
+				new Jumbo.Orm.EntityManager(
+					new Jumbo.Orm.DBContext(Jumbo.Config.Database.default)
+				)
+			),
+			new UserAccountRepository(
+				new Jumbo.Orm.EntityManager(
+					new Jumbo.Orm.DBContext(Jumbo.Config.Database.default)
+				)
+			),
+			new SomeThirdNeededService(
+				new SomeClass()
+			)
+		);
+
+		this.someOtherService = SomeOtherService(
+			new EnterpriseRepository(
+				new Jumbo.Orm.EntityManager(
+					new Jumbo.Orm.DBContext(Jumbo.Config.Database.default)
+				)
+			),
+			new CompanyRepository(
+				new Jumbo.Orm.EntityManager(
+					new Jumbo.Orm.DBContext(Jumbo.Config.Database.default)
+				)
+			),
+			new SomeThirdNeededService(
+				new SomeClass()
+			)
+		);
+	}
+
+	async beforeActions() {
+		var user = await this.userAuthService.findUser(this.session.userId);
+
+		if (user == null) {
+			this.returnError(null, 403);
+			return;
+		}
+
+		// Do something with user
+	}
+}</code></pre>
+				</article>
+
+				<section>
+					<h3>Example with DI</h3>
+
+					<p>
+						In this example, you have very simple controller and each next controller will look like this.
+						You just register your classes and dependencies are resolved with framework automatically and
+						injected to constructor.
+					</p>
+
+					<article class="code">
+						<h1>ExampleController.class</h1>
+						<pre><code>class ExampleController {
+	constructor(UserAuthService, SomeOtherService) {
+		this.userAuthService = UserAuthService;
+		this.someOtherService = SomeOtherService;
+	}
+
+	async beforeActions() {
+		var user = await this.userAuthService.findUser(this.session.userId);
+
+		if (user == null) {
+			this.returnError(null, 403);
+			return;
+		}
+
+		// Do something with user
+	}
+}</code></pre>
+					</article>
+
+					<article class="code">
+						<h1>di-registrar.js</h1>
+						<pre><code>/**
+ * Dependency registrar - registration of Types
+ * @param {Jumbo.Ioc.DIContainer} container
+ */
+module.exports = function(container) {
+	const LifetimeScope = Jumbo.Ioc.DIContainer.LifetimeScope;
+
+	container.register(() => Jumbo.Config.Database.default, "DBConn",
+		LifetimeScope.SingleInstance);
+
+	container.register(Jumbo.Orm.DBContext,
+		"DBContext", LifetimeScope.SingleInstance);
+
+	container.register(Jumbo.Orm.EntityManager,
+		"EntityManager", LifetimeScope.SingleInstance);
+
+	container.register(App.Services.EnterpriseRepository,
+		"EnterpriseRepository", LifetimeScope.ScopeInstance);
+
+	container.register(App.Services.CompanyRepository,
+		"CompanyRepository", LifetimeScope.ScopeInstance);
+
+	container.register(App.Services.UserAccountRepository,
+		"UserAccountRepository", LifetimeScope.ScopeInstance);
+
+	container.register(App.Services.UserAuthService,
+		"UserAuthService", LifetimeScope.ScopeInstance);
+
+	container.register(App.Services.SomeThirdNeededService,
+		"SomeThirdNeededService", LifetimeScope.ScopeInstance);
+
+	container.register(App.Services.SomeOtherService,
+		"SomeOtherService", LifetimeScope.ScopeInstance);
+};</code></pre>
+					</article>
+				</section>
+
+				<blockquote>
+					If you want to resolve class manually somewhere in code, you can use
+					<span class="inline-code">Jumbo.Ioc.DIContainer.resolve("UserService")</span>
+					or <span class="inline-code">this.scope.resolve("UserService")</span> if you
+					are in controller and you want to resolve your class in controller's Scope.
+					<span class="no-wrap">See API: <a href="#fold-api-ioc">Ioc</a>.</span>
+				</blockquote>
+
+			</section>
+		</section>
+	</section>
+
+	<section>
+		<h1 id="fold-api">API</h1>
+
+		<section>
+			<h2 id="fold-adapters">Jumbo.Adapters</h2>
+			<p>
+				<strong>Jumbo</strong> is quite modular framework, it integrates many features but almost everything
+				can be changed thanks <strong>adapters</strong>. Adapters are some classes which makes interfaces
+				over some features.
+			</p>
+			<p>
+				For example template adapter. It's class which must implements 3 methods (compile, renderCached and
+				render).
+				You should use whatever template engine you want but you must create adapter for that engine,
+				it means that you must implement those 3 methods which returns what framework want.
+				Then you just register your adapter in configuration and it's done.
+			</p>
+
+			<h3>Template Adapter</h3>
+			<article class="code">
+				<h1>Template adapter demo</h1>
+				<pre><code>class TemplateAdapter {
+	async compile(templatePath, layoutPath) {
+		return "compiled template code which can be cached";
+	}
+
+	async render(templatePath, layoutPath) {
+		return "Final HTML compiled and rendered just in time";
+	}
+
+	async renderCahed(compiledTemplate) {
+		return "final HTML from precompiled template";
+	}
+}</code></pre>
+			</article>
+		</section>
+
+		<section>
+			<h2 id="fold-api-application">Jumbo.Application<sub>namespace</sub></h2>
+			<p>
+
+			</p>
+
+			<h3 id="fold-api-application-locator">Locator<sub>class</sub></h3>
+
+			<h3 id="fold-api-application-request">Request<sub>class</sub></h3>
+		</section>
+
+		<section>
+			<h2 id="fold-base">Jumbo.Base<sub>namespace</sub></h2>
+
+			<section>
+				<h3 id="fold-base-controller">Controller<sub>class</sub></h3>
+
+				<p><strong>Controller</strong> is base class which you should extend for creating controllers.
+					<strong>Controller</strong> implements basic methods which you will need for processing actions.</p>
+
+				<h4>Class synopsis</h4>
+				<pre class="interface"><code class="javascript">class Controller {
+	request: Jumbo.Application.<a href="#fold-api-application-request">Request</a>
+	scope: Jumbo.Ioc.<a href="#fold-api-ioc-scope">Scope</a>
+	session: Object
+
+	<a href="#fold-base-controller-isAjax">isAjax()</a>;
+	<a href="#fold-base-controller-link">link(controller, action[, slashParams[, queryParams]])</a>;
+	<a href="#fold-base-controller-appLink">appLink(subApp, controller, action[, slashParams[, queryParams]])</a>;
+	<a href="#fold-base-controller-locationLink">locationLink(locationName[, controller[, action[, params]]])</a>;
+	<a href="#fold-base-controller-done">done()</a>;
+	<a href="#fold-base-controller-exit">exit()</a>;
+	<a href="#fold-base-controller-view">view([viewOrData[, data]])</a>;
+	<a href="#fold-base-controller-addMessage">addMessage(message[, messageType])</a>;
+	<a href="#fold-base-controller-returnEmpty">returnEmpty()</a>;
+	<a href="#fold-base-controller-returnData">returnData(data[, type])</a>;
+	<a href="#fold-base-controller-returnJSON">returnJSON(jsonObj)</a>;
+	<a href="#fold-base-controller-returnError">returnError(message[, statusCode])</a>;
+	<a href="#fold-base-controller-returnFileDownload">returnFileDownload(filePath[, newName])</a>;
+}</code></pre>
+
+				<section class="method">
+					<h4 id="fold-base-controller-isAjax">isAjax()</h4>
+					<p>
+						Method detect X-Requested-With header.
+					</p>
+					<h5>Returns</h5>
+					<p>
+						<b>true</b> or <b>false</b>
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-link">link(controller, action[, slashParams[, queryParams]])</h4>
+					<p>
+						Method create URL address for given location.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>controller : String</b> <em>Name of controller</em></li>
+						<li><b>action : String</b> <em>Name of action</em></li>
+						<li><i>optional</i> <b>slashParams : Object</b> <em>Object with named slash parameters</em></li>
+						<li><i>optional</i> <b>queryParams : Object</b> <em>Object with query parameters</em></li>
+					</ul>
+					<h5>Returns</h5>
+					<p>
+						<b>String</b>
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-appLink">appLink(subApp, controller, action[, slashParams[,
+						queryParams]])</h4>
+					<p>
+						Method create URL address for given location in given subapp.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>subApp : String</b> <em>Name of subapp</em></li>
+						<li><b>controller : String</b> <em>Name of controller</em></li>
+						<li><b>action : String</b> <em>Name of action</em></li>
+						<li><i>optional</i> <b>slashParams : Object</b> <em>Object with named slash parameters</em></li>
+						<li><i>optional</i> <b>queryParams : Object</b> <em>Object with query parameters</em></li>
+					</ul>
+					<h5>Returns</h5>
+					<p>
+						<b>String</b>
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-locationLink">locationLink(locationName[, controller[, action[,
+						params]]])</h4>
+					<p>
+						Method create URL address for given location which in registered in
+						<a href="#fold-api-application-locator">Locator</a>
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>locationName : String</b> <em>Name of registered location</em></li>
+						<li><i>optional</i> <b>controller : String</b> <em>Name of controller</em></li>
+						<li><i>optional</i> <b>action : String</b> <em>Name of action</em></li>
+						<li><i>optional</i> <b>params : Object</b> <em>Object with named parameters</em></li>
+					</ul>
+					<h5>Returns</h5>
+					<p>
+						<b>String</b>
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-done">done()</h4>
+					<p>
+						Ends controller stuff, calls controller's callback
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-exit">exit()</h4>
+					<p>
+						Completly ends basic workflow. Call it if you processed request/response on your own
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-view">view([viewOrData[, data]])</h4>
+					<p>
+						Ends request and return default or given view with given data,
+						view() with no params is same as calling done()
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li>
+							<i>optional</i> <b>viewOrData : String | Object</b>
+							<em>Name of spefic view or just data if view is default (if match with action name)</em>
+						</li>
+						<li><i>optional</i> <b>data : Object</b> <em>Object with data for view</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-addMessage">addMessage(message[, messageType])</h4>
+					<p>
+						Add message to data for view, allow rendering messaes for clients.
+						Messages are hold in cookie for next request or to time of first reading.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>message : String</b> <em>Your message for client</em></li>
+						<li>
+							<i>optional</i> <b>messageType : String</b>
+							<em>Your custom type which you'll handle while rendering on your own</em>
+						</li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-returnEmpty">returnEmpty()</h4>
+					<p>
+						Ends request with empty result
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-returnData">returnData(data[, type])</h4>
+					<p>
+						Ends request with result of given data and type
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>data : Object</b> <em>Data to be send</em></li>
+						<li><i>optional</i> <b>type : String</b> <em>Mime type for gven data</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-returnJSON">returnJSON(jsonObj)</h4>
+					<p>
+						Accepts data in Object convert it to JSON and ends request with given data and application/json
+						mime type
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-returnError">returnError(message[, statusCode = 500])</h4>
+					<p>
+						Ends request with error result. HTML file in /data/errors with given statusCode will be sent to
+						client.
+						If file not exists, plain text message "We're sorry but some error occurs." will be shown.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>message : String</b> <em>Message which will be logged, it doesn't display to client</em>
+						</li>
+						<li><i>optional</i> <b>statusCode : Number</b> <i>default 500</i></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-returnFileDownload">returnFileDownload(filePath[, newName])</h4>
+					<p>
+						Sends file to client for download
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>filePath : String</b></li>
+						<li><i>optional</i> <b>newName : String</b> <em></em></li>
+					</ul>
+				</section>
+
+			</section>
+		</section>
+
+		<!-- Ioc -->
+		<section>
+			<h2 id="fold-api-ioc">Jumbo.Ioc<sub>namespace</sub></h2>
+
+			<section>
+				<h3 id="fold-api-ioc-dicontainer">DIContainer<sub>class</sub></h3>
+
+			<p>
+
+			</p>
+			</section>
+
+			<section>
+				<h3 id="fold-api-ioc-scope">Scope<sub>class</sub></h3>
+			</section>
+		</section>
+
+		<!-- Logging -->
+		<section>
+			<h2 id="fold-logging">Jumbo.Logging<sub>namespace</sub></h2>
+			<p>
+				<strong>Jumbo</strong> contain fully configurable logging with log levels. Messages are logged to files,
+				each LogType has own file.
+			</p>
+
+			<h3>Log<sub>class</sub></h3>
+			<p>
+				Log is static class which give you ability log your messages. It accessible from
+				global variable via <span class="inline-code">Jumbo.Logging.Log</span>.
+			</p>
+
+			<h4>Class synopsis</h4>
+			<pre class="interface"><code>class Log {
+	static get <a href="#fold-log-logTypes">LogTypes()</a>;
+	static get <a href="#fold-log-logLevels">LogLevels()</a>;
+	static <a href="#fold-log-error">error(message[, type[, level]])</a>;
+	static <a href="#fold-log-warning">warning(message[, type[, level]])</a>;
+	static <a href="#fold-log-line">line(message[, type[, level]])</a>;
+}</code></pre>
+
+			<section class="method">
+				<h4 id="fold-log-logTypes">get LogTypes()</h4>
+				<h5>Returns</h5>
+				<p>
+					<span class="inline-code">{ Http, Std }</span>
+					<em>enum of available LogTypes</em>
+				</p>
+			</section>
+
+			<section class="method">
+				<h4 id="fold-log-logLevels">get LogLevels()</h4>
+				<h5>Returns</h5>
+				<p>
+					<span class="inline-code">{ Error, Warning, Normal, Talkative }</span>
+					<em>enum of available LogLevels</em>
+				</p>
+			</section>
+
+			<section class="method">
+				<h4 id="fold-log-error">error(message[, type[, level]])</h4>
+				<h5>Params</h5>
+				<ul>
+					<li><b>message : String</b> <em>Message to log</em></li>
+					<li><i>optional</i> <b>type : Jumbo.Logging.Log.LogTypes</b> <em>Log type</em></li>
+					<li><i>optional</i> <b>level : Jumbo.Logging.Log.LogLevels</b> <em>Log level</em></li>
+				</ul>
+			</section>
+
+			<section class="method">
+				<h4 id="fold-log-warning">warning(message[, type[, level]])</h4>
+				<h5>Params</h5>
+				<ul>
+					<li><b>message</b> <em>Message to log</em></li>
+					<li><i>optional</i> <b>type</b> <em>Log type</em></li>
+					<li><i>optional</i> <b>level</b> <em>Log level</em></li>
+				</ul>
+			</section>
+
+			<section class="method">
+				<h4 id="fold-log-line">line(message[, type[, level]])</h4>
+				<h5>Params</h5>
+				<ul>
+					<li><b>message</b> <em>Message to log</em></li>
+					<li><i>optional</i> <b>type</b> <em>Log type</em></li>
+					<li><i>optional</i> <b>level</b> <em>Log level</em></li>
+				</ul>
+			</section>
+		</section>
+
+		<!-- Validation -->
+		<section>
+			<h2 id="fold-validation">Jumbo.Validation<sub>namespace</sub></h2>
+
+			<h3>Validator<sub>class</sub></h3>
+
+			<h3>PropertyValidator<sub>class</sub></h3>
+
+		</section>
+	</section>
+
+	<!-- PACKAGES -->
+	<section>
+		<h1 id="fold-packages">Packages</h1>
+
+		<section>
+			<h2 id="fold-jumplate">Jumplate</h2>
+			<p>
+				<strong>Jumplate</strong> is <strong>Jumbo</strong>'s default termplate engine. ...
+			</p>
+		</section>
+
+		<section>
+			<h2 id="fold-jumbo-entity">Jumbo Entity</h2>
+			<p>
+				...
+			</p>
+		</section>
+	</section>
+</main>
+</body>
+</html>
