@@ -72,20 +72,13 @@
 				}
 			});
 
-//			console.log($curSection.attr("id"), curentSectionId);
-
 			if (!curentSectionId || ($curSection && $curSection.attr("id") != curentSectionId)) {
-				console.log($curSection.attr("id"), curentSectionId);
-
 				if ($curentSection) $curentSection.removeClass("cur-section");
 
 				curentSectionId = $curSection.attr("id");
 				$curentSection = menuItems.find("a[href$='" + curentSectionId + "']");
 
 				$curentSection.addClass("cur-section");
-
-//				console.log("a[href$='" + curentSection + "']");
-//				console.log(curentSection, $menuItem);
 			}
 		});
 	</script>
