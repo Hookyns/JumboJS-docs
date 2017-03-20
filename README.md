@@ -2,4 +2,4 @@
 
 See https://github.com/Hookyns/JumboJS
 
-# Show [DOCS](https://htmlpreview.github.io/?https://github.com/Hookyns/JumboJS-docs/master/index.html)
+# Show [DOCS](https://hookyns.github.io/JumboJS-docs/)

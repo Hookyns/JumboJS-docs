@@ -27,10 +27,14 @@
 			return false;
 		}
 
+		function closeMenuOnMobile() {
+			if ($(".mobile-menu-button").is(":visible")) toggleMenu();
+		}
+
 		$(function () {
 			$("a").each(function (i, el) {
 				if (el.href.indexOf("#") == -1) return;
-				$(el).attr("onclick", "gotoFold(this);");
+				$(el).attr("onclick", "gotoFold(this);closeMenuOnMobile();");
 			});
 		});
 	</script>
@@ -56,9 +60,10 @@
 
 	<div class="aside-nav">
 		<ul>
-			<li><a href="">Home</a></li>
-			<li><a href="">Examples</a></li>
-			<li><a href="">GIT</a></li>
+			<li><a href="#">Home</a></li>
+			<li><a href="#">Examples</a></li>
+			<li><a href="#">Tutorials</a></li>
+			<li><a href="https://github.com/Hookyns/JumboJS" target="_blank">GIT</a></li>
 		</ul>
 	</div>
 </header>
@@ -68,9 +73,10 @@
 	<nav>
 		<aside class="mobile-aside-nav">
 			<ul>
-				<li><a href="">Home</a></li>
-				<li><a href="">Examples</a></li>
-				<li><a href="">GIT</a></li>
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Examples</a></li>
+				<li><a href="#">Tutorials</a></li>
+				<li><a href="https://github.com/Hookyns/JumboJS" target="_blank">GIT</a></li>
 			</ul>
 		</aside>
 
@@ -894,7 +900,7 @@ module.exports = function(container) {
 				For example template adapter. It's class which must implements 3 methods (compile, renderCached and
 				render).
 				You should use whatever template engine you want but you must create adapter for that engine,
-				it means that you must implement those 3 methods which returns what framework want.
+				it means that you must implement those 3 methods which returns what framework wants.
 				Then you just register your adapter in configuration and it's done.
 			</p>
 
