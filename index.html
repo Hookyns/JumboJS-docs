@@ -688,6 +688,10 @@ module.exports = function(locator) {
 						you can use RegExp to limit your parameter's value - to option object add property with key
 						equals to your parameter's name including <b>$</b> and as value set your RegExp,
 					</li>
+					<li>
+						you can set parameter's default value - to option object add property with key equal
+						to your parameter's name without <b>$</b>,
+					</li>
 					<li>use square brackets to mark something optional.</li>
 				</ul>
 
@@ -975,6 +979,7 @@ module.exports = function(container) {
 				<span class="inline-code">npm install jumbo-developer -g</span>.
 				It'll be installed as system command so then just type in console
 				<span class="inline-code">jumbo-developer</span>.
+				With cmd <span class="inline-code">help</span> you will see list of available commands
 			</p>
 		</section>
 	</section>
@@ -1020,15 +1025,257 @@ module.exports = function(container) {
 			</article>
 		</section>
 
+		<!-- Application -->
 		<section>
 			<h2 id="fold-api-application">Jumbo.Application<sub>namespace</sub></h2>
 			<p>
-
+				Namespace with core classes.
 			</p>
 
-			<h3 id="fold-api-application-locator">Locator<sub>class</sub></h3>
+			<!-- Locator -->
+			<section>
+				<h3 id="fold-api-application-locator">Locator<sub>class</sub></h3>
 
-			<h3 id="fold-api-application-request">Request<sub>class</sub></h3>
+				<p>
+					<strong>Locator</strong> is some kind of Router which is used to define valid
+					<strong>locations</strong> - URLs.
+				</p>
+
+				<h4>Class synopsis</h4>
+				<pre class="interface"><code class="javascript">class Locator {
+	static get ParamTypes: RegExp
+	static get instance: Locator
+
+	<a href="#fold-api-application-locator-setDelimiter">setDelimiter(delimiter)</a>;
+	<a href="#fold-api-application-locator-setMainSubdomain">setMainSubdomain(subName)</a>;
+	<a href="#fold-api-application-locator-addSubdomain">addSubdomain(subName)</a>;
+	<a href="#fold-api-application-locator-addLocation">addLocation(locationName, location[, options = null[, subApp = null]])</a>;
+}</code></pre>
+
+				<section class="method">
+					<h4 id="fold-api-application-locator-setDelimiter">setDelimiter(delimiter)</h4>
+					<p>
+						Set URL part delimiter spliting parts of url (controller, action etc.)
+						eg. delimiter "~" => domain.tld/controller~action~id
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>delimiter : String</b> <em>String which will separate parts of URL</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-locator-setMainSubdomain">setMainSubdomain(subName)</h4>
+					<p>
+						Set default subdomain which will route to base app; both urls with and without main subdomain
+						will work. It's good for cases when you host application on some subdomain eg. myapp.domain.tld.
+						Main subdomain is set to "www" in default.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>subName : String</b> <em>Subdomain name, eg. "www"</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-locator-addSubdomain">addSubdomain(subName)</h4>
+					<p>
+						Register subapp to Locator as subdomain.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>subName : String</b> <em>Name of subapp</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-locator-addLocation">
+						addLocation(locationName, location[, options = null[, subApp = null]])
+					</h4>
+					<p>
+						Add new location to Locator.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>locationName : String</b> <em>Name of location</em></li>
+						<li><b>location : String</b> <em>Location string</em></li>
+						<li><i>optional</i> <b>options : Object</b> <em>
+							Location options which should define specific controller or action or can limit parameters
+						</em></li>
+						<li><i>optional</i> <b>subApp : String</b> <em>
+							Name of subapp if you want to use this location only in given subapp
+						</em></li>
+					</ul>
+				</section>
+			</section>
+
+			<!-- Request -->
+			<section>
+				<h3 id="fold-api-application-request">Request<sub>class</sub></h3>
+
+				<p><strong>Request</strong> is wrap over Node.js's native request.</p>
+
+				<h4>Class synopsis</h4>
+				<pre class="interface"><code class="javascript">class Request {
+	this.request: IncomingMessage; // Original request
+	this.response: ServerResponse; // Original response
+	this.subApp: tring; // Name of subapp
+	this.controller: string; // Name of controller
+	this.action: string; // Name of action
+	this.params: Array; // Params from URL (query params and slash params)
+	this.body = {{fields: {}, files: {}} | null};
+	this.header: {"Content-Type": "text/html"};
+	this.noCache: bool;
+	this.sessionId: string;
+	this.beginTime: Date
+
+	<a href="#fold-api-application-request-setDelimiter">setCookie(name, value[, expire[, domain[, path]]])</a>;
+	<a href="#fold-api-application-request-getCookies">getCookies()</a>;
+	<a href="#fold-api-application-request-getCookie">getCookie(name)</a>;
+	<a href="#fold-api-application-request-unsetCookie">unsetCookie(name)</a>;
+	<a href="#fold-api-application-request-getIP">getIP()</a>;
+	<a href="#fold-api-application-request-redirect">redirect(controllerName, actionName[, slashParams[, queryParams[, protocol]]])</a>;
+	<a href="#fold-api-application-request-subAppRedirect">subAppRedirect(subAppName, controllerName, actionName[, slashParams[, queryParams[, protocol]]])</a>;
+	<a href="#fold-api-application-request-locationRedirect">locationRedirect(locationName[, controllerName[, actionName[, params]]])</a>;
+	<a href="#fold-api-application-request-redirectURL">redirectURL(url)</a>;
+	<a href="#fold-api-application-request-reload">reload()</a>;
+}</code></pre>
+
+				<section class="method">
+					<h4 id="fold-api-application-request-setDelimiter">
+						setCookie(name, value[, expire[, domain[, path]]])
+					</h4>
+					<h5>Params</h5>
+					<ul>
+						<li><b>name : String</b> <em>Cookie name</em></li>
+						<li><b>value : String</b> <em>Cookie value</em></li>
+						<li><i>optional</i> <b>expire : Number</b> <em>Expiration in seconds</em></li>
+						<li><i>optional</i> <b>domain : String</b> <em>Domain</em></li>
+						<li><i>optional</i> <b>path : String</b> <em>Path</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-request-getCookies">
+						getCookies()
+					</h4>
+					<h5>Returns</h5>
+					<p>
+						<b>Object</b> with cookies
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-request-getCookie">
+						getCookie(name)
+					</h4>
+					<h5>Params</h5>
+					<ul>
+						<li><b>name : String</b> <em>Cookie name</em></li>
+					</ul>
+					<h5>Returns</h5>
+					<p>
+						<b>String</b> | <b>null</b> cookie's value
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-request-unsetCookie">
+						unsetCookie(name)
+					</h4>
+					<h5>Params</h5>
+					<ul>
+						<li><b>name : String</b> <em>Cookie name</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-request-getIP">
+						getIP()
+					</h4>
+					<h5>Returns</h5>
+					<p>
+						<b>String</b> Client's IP
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-request-redirect">
+						redirect(controllerName, actionName[, slashParams[, queryParams[, protocol]]])
+					</h4>
+					<p>
+						Redirect client to location defined by controller and action.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>controllerName : String</b> <em>Controller name</em></li>
+						<li><b>actionName : String</b> <em>Actin value</em></li>
+						<li><i>optional</i> <b>slashParams : Array</b> <em>List of slash params in given order</em></li>
+						<li><i>optional</i> <b>queryParams : Object</b> <em>Object with query params</em></li>
+						<li><i>optional</i> <b>protocol : String</b> <i>default http</i> <em>Protocol http or https</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-request-subAppRedirect">
+						subAppRedirect(subAppName, controllerName, actionName[, slashParams[, queryParams[, protocol]]])
+					</h4>
+					<p>
+						Redirect client to subapp location defined by controller and action.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>subAppName : String</b> <em>Subapp name</em></li>
+						<li><b>controllerName : String</b> <em>Controller name</em></li>
+						<li><b>actionName : String</b> <em>Actin value</em></li>
+						<li><i>optional</i> <b>slashParams : Array</b> <em>List of slash params in given order</em></li>
+						<li><i>optional</i> <b>queryParams : Object</b> <em>Object with query params</em></li>
+						<li><i>optional</i> <b>protocol : String</b> <i>default http</i> <em>Protocol http or https</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-request-locationRedirect">
+						locationRedirect(locationName[, controllerName[, actionName[, params]]])
+					</h4>
+					<p>
+						Redirect client to one of the registered locaions.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>locationName : String</b> <em>Location name</em></li>
+						<li><i>optional</i> <b>controllerName : String</b> <em>Specific cotroller name</em></li>
+						<li><i>optional</i> <b>actionName : Object</b> <em>Specific action name</em></li>
+						<li><i>optional</i> <b>params : Object</b> <em>Object with parameters indexed by parameter names</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-request-redirectURL">
+						redirectURL(url)
+					</h4>
+					<p>
+						Redirect client to given URL.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>url : String</b></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-request-reload">
+						reload()
+					</h4>
+					<p>
+						Redirect client to same url -> reload page.
+					</p>
+				</section>
+
+				<blockquote>
+					In controllers you must call this.exit(); after calling redirects!
+				</blockquote>
+			</section>
 		</section>
 
 		<section>
@@ -1050,7 +1297,6 @@ module.exports = function(container) {
 	<a href="#fold-base-controller-link">link(controller, action[, slashParams[, queryParams]])</a>;
 	<a href="#fold-base-controller-appLink">appLink(subApp, controller, action[, slashParams[, queryParams]])</a>;
 	<a href="#fold-base-controller-locationLink">locationLink(locationName[, controller[, action[, params]]])</a>;
-	<a href="#fold-base-controller-done">done()</a>;
 	<a href="#fold-base-controller-exit">exit()</a>;
 	<a href="#fold-base-controller-view">view([viewOrData[, data]])</a>;
 	<a href="#fold-base-controller-addMessage">addMessage(message[, messageType])</a>;
@@ -1131,13 +1377,6 @@ module.exports = function(container) {
 				</section>
 
 				<section class="method">
-					<h4 id="fold-base-controller-done">done()</h4>
-					<p>
-						Ends controller stuff, calls controller's callback
-					</p>
-				</section>
-
-				<section class="method">
 					<h4 id="fold-base-controller-exit">exit()</h4>
 					<p>
 						Completly ends basic workflow. Call it if you processed request/response on your own
@@ -1147,8 +1386,7 @@ module.exports = function(container) {
 				<section class="method">
 					<h4 id="fold-base-controller-view">view([viewOrData[, data]])</h4>
 					<p>
-						Ends request and return default or given view with given data,
-						view() with no params is same as calling done()
+						Ends request and return default or given view with given data.
 					</p>
 					<h5>Params</h5>
 					<ul>
@@ -1240,13 +1478,105 @@ module.exports = function(container) {
 			<section>
 				<h3 id="fold-api-ioc-dicontainer">DIContainer<sub>class</sub></h3>
 
-				<p>
+				<p><strong>DIContainer</strong> is IoC container which register and resolve your classes.</p>
 
-				</p>
+				<h4>Class synopsis</h4>
+				<pre class="interface"><code class="javascript">class DIContainer {
+	static get LifetimeScope: Jumbo.Ioc.DIContainer.LifetimeScope;
+	static get instance: Jumbo.Ioc.DIContainer
+
+	<a href="#fold-api-ioc-dicontainer-register">register(expr, as)</a>;
+	<a href="#fold-api-ioc-dicontainer-resolve">resolve(name)</a>;
+	<a href="#fold-api-ioc-dicontainer-resolveUnregistered">resolveUnregistered(type)</a>;
+}</code></pre>
+
+				<section class="method">
+					<h4 id="fold-api-ioc-dicontainer-register">register(expr, as)</h4>
+					<p>
+						Register Type to container under given name. If you place that name to constructor, it'll be matched
+						with this type and injected to that parameter.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>expr : Function</b> <em>Class or arrow function returning Class</em></li>
+						<li><b>as : String</b> <em>Registration name of Class</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-ioc-dicontainer-resolve">resolve(name)</h4>
+					<p>
+						Resolve dependency which is registered under given name.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>name : String</b> <em>Registration name of Class</em></li>
+					</ul>
+					<h5>Returns</h5>
+					<p>
+						Return instance of registered type
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-ioc-dicontainer-resolveUnregistered">resolveUnregistered(type)</h4>
+					<p>
+						Create instance of given type and resolve it's dependencies.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>type : Function</b> <em>Type which you want to resolve</em></li>
+					</ul>
+					<h5>Returns</h5>
+					<p>
+						Return instance of given type with resolved dependencies
+					</p>
+				</section>
 			</section>
 
 			<section>
 				<h3 id="fold-api-ioc-scope">Scope<sub>class</sub></h3>
+
+				<p>
+					<strong>Scope</strong> is IoC scope which resolve your types and returns same instances for already
+					resolved types in this scope.
+				</p>
+
+				<h4>Class synopsis</h4>
+				<pre class="interface"><code class="javascript">class Scope {
+	<a href="#fold-api-ioc-dicontainer-resolve">resolve(name)</a>;
+	<a href="#fold-api-ioc-dicontainer-resolveUnregistered">resolveUnregistered(type)</a>;
+}</code></pre>
+
+				<section class="method">
+					<h4 id="fold-api-ioc-dicontainer-resolve">resolve(name)</h4>
+					<p>
+						Resolve dependency which is registered under given name.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>name : String</b> <em>Registration name of Class</em></li>
+					</ul>
+					<h5>Returns</h5>
+					<p>
+						Return instance of registered type
+					</p>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-ioc-dicontainer-resolveUnregistered">resolveUnregistered(type)</h4>
+					<p>
+						Create instance of given type and resolve it's dependencies.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>type : Function</b> <em>Type which you want to resolve</em></li>
+					</ul>
+					<h5>Returns</h5>
+					<p>
+						Return instance of given type with resolved dependencies
+					</p>
+				</section>
 			</section>
 		</section>
 
@@ -1337,6 +1667,7 @@ module.exports = function(container) {
 	<section>
 		<h1 id="fold-packages">Packages</h1>
 
+		<!-- Jumplate -->
 		<section>
 			<h2 id="fold-jumplate">Jumplate</h2>
 			<p>
