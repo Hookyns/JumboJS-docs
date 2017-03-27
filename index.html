@@ -1340,7 +1340,103 @@ module.exports = function(container) {
 		<section>
 			<h2 id="fold-jumplate">Jumplate</h2>
 			<p>
-				<strong>Jumplate</strong> is <strong>Jumbo</strong>'s default termplate engine. ...
+				<strong>Jumplate</strong> is <strong>Jumbo</strong>'s default template engine.
+			</p>
+			<p>
+				It's one of the fastest (faster than Jade, EJS, Handlebars.js, Underscore) Node.js template
+				engine with cacheable precompilation. Jumplate is able to compile 16 000 templates in one second
+				and render 400 000 precompiled templates in one second in one 2,33&nbsp;Ghz core.
+			</p>
+			<p>
+				Template code is compiled to native JavaScript (can be cached), than it can be rendered with given
+				set of data into final HTML.
+			</p>
+
+			<h3>Variables</h3>
+			All variables begin with <strong>$</strong> symbol.
+			Each variable can be printed as <span class="inline-code">{$variable}</span>
+
+			It's possible to define variable right inside
+			template with <span class="inline-code">{var $x = new Date().toString()}</span>
+
+			<h3>Block</h3>
+			Define block of code which is not rendered in place of definition
+			but must be requested with <span class="inline-code">{include blockName}</span>.
+			Block can be included many times.
+			<span class="inline-code br">
+			{block blockName}Block content{/block}
+			</span>
+
+			<h3>Include</h3>
+			Include block or other template file.
+
+			<span class="inline-code">{include blockName}</span> will include block with given name.
+
+			<span class="inline-code">{include "./path/to/template.tpl"}</span> will include file with given path.
+
+			<h3>Define</h3>
+			Define is similar to block, but define will be rendered in place of definition.
+
+			<span class="inline-code br">
+			{define defineBlockName}Define block content will be rendered here{/define}
+			</span>
+
+			Definition can be verified with <span class="inline-code">{defined defineBlockName}{/defined}</span>
+			and used with <span class="inline-code">{use deineBlockName}</span>
+
+			<h3>Cycles</h3>
+			<p>
+				There are two cycles.
+				<span class="inline-code br">
+					{for $x = 0; $x < $count; $x++}For content{/for}
+				</span>
+				and
+				<span class="inline-code br">
+					{foreach $item in $list}Foreach content{/foreach}
+				</span>
+			</p>
+
+			<blockquote>
+				In case of foreach there is special variable `$itemKey` which is accessible
+				inside cycle and contains key of current item.
+			</blockquote>
+
+			<p>
+				In both cycles you can use commands
+				<span class="inline-code br">
+					{first}Will be rendered if this iteration is first{/first}
+				</span>
+				<span class="inline-code br">
+					{last}Will be rendered if this iteration is last{/last}
+				</span>
+				<span class="inline-code br">
+					{even}Will be rendered if this iteration is even{/even}
+				</span>
+				<span class="inline-code br">
+					{odd}Will be rendered if this iteration is odd{/odd}
+				</span>
+			</p>
+
+			<blockquote>
+				These commands can be used in single (not nested) cycles, will be repaired later.
+			</blockquote>
+
+			<h3>Conditions</h3>
+			<article class="code">
+			<pre><code class="html">{if $x == "condition"}
+	if condition true...
+{elseif $x == "else if conditio"}
+	if else if condition true...
+{else}
+	else...
+{/if}</code></pre>
+			</article>
+
+			<h3>Localization</h3>
+			<p>
+				You can register localization hadler to Jumplate and
+				than use command <span class="inline-code">{loc Key.for.requested.translation}</span>
+				which will call your handler with given key as parameter.
 			</p>
 		</section>
 
