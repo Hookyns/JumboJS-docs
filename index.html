@@ -52,14 +52,14 @@
 		var curentSectionId = null;
 		var $curentSection = null;
 
-		$(document).on("scroll", function(){
+		$(document).on("scroll", function () {
 			if (!headlines) return;
 
 			var bodyScroll = $("body").scrollTop();
 			var $curSection;
 			var curSectionOffset = 0;
 
-			headlines.each(function(i, el) {
+			headlines.each(function (i, el) {
 				var $el = $(el);
 				var offset = $el.offset().top;
 				var headlineId = $el.attr("id");
@@ -85,15 +85,6 @@
 
 	<link rel="stylesheet" href="styles/agate.css">
 	<link rel="stylesheet" href="default.css">
-
-	<style>
-		.hljs-line-numbers {
-			text-align: right;
-			border-right: 1px solid #ccc;
-			color: #999;
-			user-select: none;
-		}
-	</style>
 
 	<title>Jumbo Documentation</title>
 </head>
@@ -147,6 +138,7 @@
 					<li><a href="#fold-routing">Routing</a></li>
 					<li><a href="#fold-controllers">Controllers</a></li>
 					<li><a href="#fold-dependency-injection">Dependency Injection</a></li>
+					<li><a href="#fold-cli">CLI</a></li>
 				</ul>
 			</li>
 			<li>
@@ -626,6 +618,7 @@ application.runWhenReady(80, function() {
 
 		</section>
 
+		<!-- Routing -->
 		<section>
 			<h2 id="fold-routing">Routing</h2>
 			<p>
@@ -678,8 +671,33 @@ module.exports = function(locator) {
 };</code></pre>
 				</article>
 			</section>
+
+			<section>
+				<h3>Locations</h3>
+
+				<p>Just few points you should know about <strong>locations</strong> (routes).</p>
+
+				<ul>
+					<li>
+						There are variables <strong>$controller</strong> and <strong>$action</strong> which stands
+						for any controller and any action,
+					</li>
+					<li>define your own parameter (called slash param) with name starting with <b>$</b>,</li>
+					<li>use <b>/</b> (slash) as separator of urls's parts (eg. $controller/$action),</li>
+					<li>
+						you can use RegExp to limit your parameter's value - to option object add property with key
+						equals to your parameter's name including <b>$</b> and as value set your RegExp,
+					</li>
+					<li>use square brackets to mark something optional.</li>
+				</ul>
+
+				<blockquote>
+					Use not-matching groups <b>(?:something)</b> in RegExp limiting your parameter's value
+				</blockquote>
+			</section>
 		</section>
 
+		<!-- Controllers -->
 		<section>
 			<h2 id="fold-controllers">Controllers</h2>
 			<p>
@@ -722,6 +740,18 @@ module.exports = function(locator) {
 				will be accessible only with GET method.
 			</blockquote>
 
+			<h3>Action Parameters</h3>
+			<p>
+				All parameters (query params and <strong>location</strong>'s params under defined names) from requested
+				URL are injected to actions as parameters under their names in order as you define them in action.
+				Eg. if you request for <span class="inline-code">/articles/delete/5?foo=bar</span>, two params exist.
+				First parameter is <b>5</b> which is defined in default <strong>location</strong> as <b>id</b>
+				and second parameter is <b>bar</b> as <b>foo</b>. These two params will be injected to your action
+				<span class="inline-code">actionDelete(id, foo) {}</span> to match names you defined. In that action
+				you wait for <b>id</b> and <b>foo</b>. If these parameters exist in request, action will be called
+				with that parameters in right order, matched by parameters names.
+			</p>
+
 			<h3>Returning methods</h3>
 			<p>
 				Returning methods are methods implemented in class <strong>Jumbo.Base.Controller</strong> and
@@ -729,10 +759,11 @@ module.exports = function(locator) {
 				<a href="#fold-base-controller">Controller</a>.
 			</p>
 
-			<h3>Example Controller</h3>
-			<article class="code">
-				<h1>Example of controller</h1>
-				<pre><code>/**
+			<section>
+				<h3>Example Controller</h3>
+				<article class="code">
+					<h1>Example of controller</h1>
+					<pre><code>/**
  * // TODO: Describe your controller
  * @class ExampleController
  * @memberOf App.Controllers
@@ -747,7 +778,8 @@ class ExampleController extends App.Controllers.BaseController {
 }
 
 module.exports = ExampleController;</code></pre>
-			</article>
+				</article>
+			</section>
 
 			<h3>Sequence diagram</h3>
 			<p>
@@ -777,6 +809,7 @@ module.exports = ExampleController;</code></pre>
 			</p>
 		</section>
 
+		<!-- DI -->
 		<section>
 			<h2 id="fold-dependency-injection">Dependency Injection</h2>
 			<p>
@@ -797,7 +830,7 @@ module.exports = ExampleController;</code></pre>
 				<h3>Example without DI</h3>
 
 				<p>In this example, you must create instance of each class on your own. If you have 10 controllers,
-				with same or similar dependencies, you must write more than two hundred lines of code.</p>
+					with same or similar dependencies, you must write more than two hundred lines of code.</p>
 
 				<article class="code">
 					<h1>ExampleController.class</h1>
@@ -928,6 +961,22 @@ module.exports = function(container) {
 
 			</section>
 		</section>
+
+		<!-- CLI -->
+		<section>
+			<h2>CLI</h2>
+			<p>
+				<strong>Jumbo</strong> has special package <strong>jumbo-developer</strong> which was created to support
+				developing. It's console app which helps you with creating projects, controllers and their actions,
+				services and more.
+			</p>
+			<p>
+				You can download <strong>jumbo-developer</strong> via npm
+				<span class="inline-code">npm install jumbo-developer -g</span>.
+				It'll be installed as system command so then just type in console
+				<span class="inline-code">jumbo-developer</span>.
+			</p>
+		</section>
 	</section>
 
 	<section>
@@ -948,6 +997,10 @@ module.exports = function(container) {
 				Then you just register your adapter in configuration and it's done.
 			</p>
 
+			<blockquote>
+				Adapters are not ready yet!
+			</blockquote>
+
 			<h3>Template Adapter</h3>
 			<article class="code">
 				<h1>Template adapter demo</h1>
@@ -956,11 +1009,11 @@ module.exports = function(container) {
 		return "compiled template code which can be cached";
 	}
 
-	async render(templatePath, layoutPath) {
+	async render(templatePath, layoutPath, data) {
 		return "Final HTML compiled and rendered just in time";
 	}
 
-	async renderCahed(compiledTemplate) {
+	async renderCahed(compiledTemplate, data) {
 		return "final HTML from precompiled template";
 	}
 }</code></pre>
@@ -1187,9 +1240,9 @@ module.exports = function(container) {
 			<section>
 				<h3 id="fold-api-ioc-dicontainer">DIContainer<sub>class</sub></h3>
 
-			<p>
+				<p>
 
-			</p>
+				</p>
 			</section>
 
 			<section>
