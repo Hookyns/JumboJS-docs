@@ -99,6 +99,7 @@
 			<li><a href="#">Examples</a></li>
 			<li><a href="#">Tutorials</a></li>
 			<li><a href="https://github.com/Hookyns/JumboJS" target="_blank">GIT</a></li>
+			<li><a href="https://gitter.im/JumboJS" target="_blank">GITTER</a></li>
 		</ul>
 	</div>
 </header>
@@ -112,6 +113,7 @@
 				<li><a href="#">Examples</a></li>
 				<li><a href="#">Tutorials</a></li>
 				<li><a href="https://github.com/Hookyns/JumboJS" target="_blank">GIT</a></li>
+				<li><a href="https://gitter.im/JumboJS" target="_blank">GITTER</a></li>
 			</ul>
 		</aside>
 
@@ -1544,12 +1546,12 @@ module.exports = function(container) {
 
 				<h4>Class synopsis</h4>
 				<pre class="interface"><code class="javascript">class Scope {
-	<a href="#fold-api-ioc-dicontainer-resolve">resolve(name)</a>;
-	<a href="#fold-api-ioc-dicontainer-resolveUnregistered">resolveUnregistered(type)</a>;
+	<a href="#fold-api-ioc-scope-resolve">resolve(name)</a>;
+	<a href="#fold-api-ioc-scope-resolveUnregistered">resolveUnregistered(type)</a>;
 }</code></pre>
 
 				<section class="method">
-					<h4 id="fold-api-ioc-dicontainer-resolve">resolve(name)</h4>
+					<h4 id="fold-api-ioc-scope-resolve">resolve(name)</h4>
 					<p>
 						Resolve dependency which is registered under given name.
 					</p>
@@ -1564,7 +1566,7 @@ module.exports = function(container) {
 				</section>
 
 				<section class="method">
-					<h4 id="fold-api-ioc-dicontainer-resolveUnregistered">resolveUnregistered(type)</h4>
+					<h4 id="fold-api-ioc-scope-resolveUnregistered">resolveUnregistered(type)</h4>
 					<p>
 						Create instance of given type and resolve it's dependencies.
 					</p>
