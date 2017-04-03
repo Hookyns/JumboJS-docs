@@ -185,19 +185,21 @@
 			<ul>
 				<li>No requires! Global lazy-loading namespace exists,</li>
 				<li>integrated Node.js clustering - multi core / CPU support,</li>
-				<li>advanced variable routing system (just one route for most apps),</li>
+				<li>advanced variable routing system (just one route enough for most apps),</li>
 				<li>integrated Inversion of Control - constructor Dependency Injection,</li>
 				<li>code can be changed while runtime,</li>
-				<li>unexpected errors are catched and logged. Then process is restarted,</li>
+				<li>unexpected errors are catched and logged, then process is restarted,</li>
 				<li>fully configurable logging with log levels,</li>
 				<li>subdomains! More "modules" in one application accessible via subdomains,</li>
 				<li>a lot of things integrated but changeable thanks to Adapters,</li>
-				<li>code-first ORM with migrations,</li>
+				<li>code-first ORM with migrations (soon),</li>
 				<li>sessions stored on disk and in memory for faster access,</li>
-				<li>integrated email sender,</li>
+				<li>integrated email sender (soon),</li>
 				<li>native async & await support,</li>
-				<li>low dependecy - just few packages from 3rd party, it means that everything is made right for
-					Jumbo.
+				<li>high performance - 3 000 requests per second with one worker (2,33 GHz core),</li>
+				<li>
+					low dependecy - just few packages from 3rd party, it means that everything is made right
+					for JumboJS
 				</li>
 			</ul>
 
@@ -594,7 +596,7 @@ module.exports = applicationConfig;</code></pre>
 				<article class="code">
 					<h1>app.js</h1>
 					<pre><code>/**
- * Application inital script
+ * Application initial script
  */
 
 // Get application from jumbo-core
@@ -787,32 +789,45 @@ module.exports = ExampleController;</code></pre>
 				</article>
 			</section>
 
-			<h3>Sequence diagram</h3>
-			<p>
-				There is some sequence diagram which show you how are actions called in controllers.
-			</p>
-			<div class="center-content">
-				<a href="./images/Jumbo-controller-sequence.png">
-					<img src="./images/Jumbo-controller-sequence.png" width="90%" style="max-width: 1200px;">
-				</a>
-			</div>
-			<p>
-				When request from client comes to server, Application handle that, verify request target and do some
-				other stuff.
-				Then if everything is ok, Application let ControllerFactory create ExampleController instance for given
-				request.
-			</p>
-			<p>
-				When instance of ExampleController is created, initController() method is called and
-				request, sessions, controllerCallback and diScope parameters are set to controller.
-			</p>
-			<p>
-				Now it's time for calling action. But first there are beforeActions() methods
-				(one in BaseController and one in ExampleController) which you can use to verify user or initialize
-				something.
-				First beforeActions() in BaseController is called, then in ExampleController. You should call
-				one of the returning methods to stop action calling chain in both beforeActions() methods.
-			</p>
+			<section>
+				<h3>Sequence diagram</h3>
+				<p>
+					There is some sequence diagram which show you how are actions called in controllers.
+				</p>
+				<div class="center-content">
+					<a href="./images/Jumbo-controller-sequence.png">
+						<img src="./images/Jumbo-controller-sequence.png" width="90%" style="max-width: 1200px;">
+					</a>
+				</div>
+				<p>
+					When request from client comes to server, Application handle that, verify request target and do some
+					other stuff.
+					Then if everything is ok, Application let ControllerFactory create ExampleController instance for
+					given
+					request.
+				</p>
+				<p>
+					When instance of ExampleController is created, initController() method is called and
+					request, sessions, controllerCallback and diScope parameters are set to controller.
+				</p>
+				<p>
+					Now it's time for calling action. But first there are beforeActions() methods
+					(one in BaseController and one in ExampleController) which you can use to verify user or initialize
+					something.
+					First beforeActions() in BaseController is called, then in ExampleController. You should call
+					one of the returning methods to stop action calling chain in both beforeActions() methods.
+				</p>
+			</section>
+
+			<section>
+				<h3>Sessions</h3>
+				<p>
+					Session is object in controller instance (property <strong>session</strong>) which is stored in
+					memory, that allows you to store instances and sure it's much faster. But it's saved on disk too,
+					because server can crash for some reason and maybe you store big data and have low memory on your
+					server so disk provide you big storage for your sessions.
+				</p>
+			</section>
 		</section>
 
 		<!-- DI -->
@@ -1214,7 +1229,8 @@ module.exports = function(container) {
 						<li><b>actionName : String</b> <em>Actin value</em></li>
 						<li><i>optional</i> <b>slashParams : Array</b> <em>List of slash params in given order</em></li>
 						<li><i>optional</i> <b>queryParams : Object</b> <em>Object with query params</em></li>
-						<li><i>optional</i> <b>protocol : String</b> <i>default http</i> <em>Protocol http or https</em></li>
+						<li><i>optional</i> <b>protocol : String</b> <i>default http</i> <em>Protocol http or https</em>
+						</li>
 					</ul>
 				</section>
 
@@ -1232,7 +1248,8 @@ module.exports = function(container) {
 						<li><b>actionName : String</b> <em>Actin value</em></li>
 						<li><i>optional</i> <b>slashParams : Array</b> <em>List of slash params in given order</em></li>
 						<li><i>optional</i> <b>queryParams : Object</b> <em>Object with query params</em></li>
-						<li><i>optional</i> <b>protocol : String</b> <i>default http</i> <em>Protocol http or https</em></li>
+						<li><i>optional</i> <b>protocol : String</b> <i>default http</i> <em>Protocol http or https</em>
+						</li>
 					</ul>
 				</section>
 
@@ -1248,7 +1265,8 @@ module.exports = function(container) {
 						<li><b>locationName : String</b> <em>Location name</em></li>
 						<li><i>optional</i> <b>controllerName : String</b> <em>Specific cotroller name</em></li>
 						<li><i>optional</i> <b>actionName : Object</b> <em>Specific action name</em></li>
-						<li><i>optional</i> <b>params : Object</b> <em>Object with parameters indexed by parameter names</em></li>
+						<li><i>optional</i> <b>params : Object</b> <em>Object with parameters indexed by parameter
+							names</em></li>
 					</ul>
 				</section>
 
@@ -1495,7 +1513,8 @@ module.exports = function(container) {
 				<section class="method">
 					<h4 id="fold-api-ioc-dicontainer-register">register(expr, as)</h4>
 					<p>
-						Register Type to container under given name. If you place that name to constructor, it'll be matched
+						Register Type to container under given name. If you place that name to constructor, it'll be
+						matched
 						with this type and injected to that parameter.
 					</p>
 					<h5>Params</h5>
