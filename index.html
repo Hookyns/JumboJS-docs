@@ -441,7 +441,7 @@ var applicationConfig = {
 	},
 
 	/**
-	 * Enable template cache and define storage type (and limit)
+	 * Enable template cache and define memory limit
 	 */
 	cache: {
 		/**
@@ -450,13 +450,9 @@ var applicationConfig = {
 		enabled: true,
 
 		/**
-		 * @default HardDrive
-		 */
-		storage: $cfg.Cache.HardDrive,
-
-		/**
-		 * If you use InMemory cache, this is the size limit
-		 * @default 20 MB
+		 * Size limit for templates saved in memory
+		 * Jumbo store often used templates in memory
+		 * @default 10 MB
 		 */
 		memoryCacheSizeLimit: 20e6
 	},
