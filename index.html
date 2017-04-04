@@ -1315,10 +1315,12 @@ module.exports = function(container) {
 	<a href="#fold-base-controller-locationLink">locationLink(locationName[, controller[, action[, params]]])</a>;
 	<a href="#fold-base-controller-exit">exit()</a>;
 	<a href="#fold-base-controller-view">view([viewOrData[, data]])</a>;
+	<a href="#fold-base-controller-singleView">singleView([singleView[, data]])</a>;
+	<a href="#fold-base-controller-autoView">autoView([viewOrData[, data]])</a>;
 	<a href="#fold-base-controller-addMessage">addMessage(message[, messageType])</a>;
 	<a href="#fold-base-controller-returnEmpty">returnEmpty()</a>;
 	<a href="#fold-base-controller-returnData">returnData(data[, type])</a>;
-	<a href="#fold-base-controller-returnJSON">returnJSON(jsonObj)</a>;
+	<a href="#fold-base-controller-returnJSON">returnJson(jsonObj)</a>;
 	<a href="#fold-base-controller-returnError">returnError(message[, statusCode])</a>;
 	<a href="#fold-base-controller-returnFileDownload">returnFileDownload(filePath[, newName])</a>;
 }</code></pre>
@@ -1415,6 +1417,37 @@ module.exports = function(container) {
 				</section>
 
 				<section class="method">
+					<h4 id="fold-base-controller-singleView">singleView([singleView[, data]])</h4>
+					<p>
+						Ends request and return single view without layout.
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li>
+							<i>optional</i> <b>singleView : String | Object</b>
+							<em>Name of spefic view or just data if view is default (if match with action name)</em>
+						</li>
+						<li><i>optional</i> <b>data : Object</b> <em>Object with data for view</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-base-controller-autoView">autoView([viewOrData[, data]])</h4>
+					<p>
+						Return view or just data if request is Xhr. It's same as writing
+						<span class="inline-code">if (this.isXhr()) this.returnJson(data) else this.view(data)</span>
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li>
+							<i>optional</i> <b>viewOrData : String | Object</b>
+							<em>Name of spefic view or just data if view is default (if match with action name)</em>
+						</li>
+						<li><i>optional</i> <b>data : Object</b> <em>Object with data for view</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
 					<h4 id="fold-base-controller-addMessage">addMessage(message[, messageType])</h4>
 					<p>
 						Add message to data for view, allow rendering messaes for clients.
@@ -1450,7 +1483,7 @@ module.exports = function(container) {
 				</section>
 
 				<section class="method">
-					<h4 id="fold-base-controller-returnJSON">returnJSON(jsonObj)</h4>
+					<h4 id="fold-base-controller-returnJSON">returnJson(jsonObj)</h4>
 					<p>
 						Accepts data in Object convert it to JSON and ends request with given data and application/json
 						mime type
