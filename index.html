@@ -160,7 +160,7 @@
 
 				<ul>
 					<li><a href="#fold-jumplate">Jumplate</a></li>
-					<li><a href="#fold-jumbo-entity">Jumbo Entity</a></li>
+					<!--<li><a href="#fold-jumbo-entity">Jumbo Entity</a></li>-->
 				</ul>
 			</li>
 		</ul>
@@ -192,11 +192,11 @@
 				<li>fully configurable logging with log levels,</li>
 				<li>subdomains! More "modules" in one application accessible via subdomains,</li>
 				<li>a lot of things integrated but changeable thanks to Adapters,</li>
-				<li>code-first ORM with migrations (soon),</li>
+				<li>code-first ORM with migrations (or MongoDB? or same wrap over all?) (soon),</li>
 				<li>sessions stored on disk and in memory for faster access,</li>
 				<li>integrated email sender (soon),</li>
 				<li>native async & await support,</li>
-				<li>high performance - 3 000 requests per second with one worker (2,33 GHz core),</li>
+				<li>high performance - 2 900 requests per second with one worker (2,33 GHz core),</li>
 				<li>
 					low dependecy - just few packages from 3rd party, it means that everything is made right
 					for JumboJS
@@ -311,7 +311,8 @@
 			<p>
 				Now you should run your application. Go to your project directory and run it via
 				<span class="inline-code">node app.js</span>. Your application should run on address
-				<em>http://127.0.0.1</em>.
+				<em>http://127.0.0.1</em> on port 80. If you want to change default port, edit app.js file,
+				and change parameter of runWhenReady(port, ...).
 			</p>
 			<blockquote>
 				If you want to use framework's subdomains, you should edit your local hosts file and add
@@ -706,14 +707,14 @@ module.exports = function(locator) {
 			<h2 id="fold-controllers">Controllers</h2>
 			<p>
 				Controllers are some kind of entry points to your application. Controller's methods,
-				which should be accessible from web, are called <strong>actions</strong> and must begin with word
+				which should be accessible from web, are called <strong>actions</strong> and must begin with keyword
 				"action".
 				This word tells framework you want let clients access this method from browser.
 			</p>
 
 			<p>
 				Controllers must be placed in <span class="inline-code">/app/controllers/</span>.
-				Name convention is PascalCase and name must ends with "Controller".
+				Name convention is PascalCase and name must ends with keyword "Controller".
 				Extension of files should be <span class="inline-code">.class</span> but it's not required.
 				Controller shuld be ES2015 class and must be exported from module.
 			</p>
@@ -734,7 +735,7 @@ module.exports = function(locator) {
 			<h3>Actions</h3>
 			<p>
 				What actions are is written in paragraphs above. Name convention is lowerCamelCase and name must
-				starts with word "action". Actions should be async (ES7) but it is not required because actions
+				starts with keyword "action". Actions must be async (ES7) but it is not required because actions
 				not return results but call one of the returning method.
 			</p>
 
@@ -1008,8 +1009,8 @@ module.exports = function(container) {
 				over some features.
 			</p>
 			<p>
-				For example template adapter. It's class which must implements 3 methods (compile, renderCached and
-				render).
+				For example template adapter. It's class which must implements 3 methods (render, preCompile and
+				renderPreCompiled).
 				You should use whatever template engine you want but you must create adapter for that engine,
 				it means that you must implement those 3 methods which returns what framework wants.
 				Then you just register your adapter in configuration and it's done.
@@ -1022,19 +1023,35 @@ module.exports = function(container) {
 			<h3>Template Adapter</h3>
 			<article class="code">
 				<h1>Template adapter demo</h1>
-				<pre><code>class TemplateAdapter {
-	async compile(templatePath, layoutPath) {
-		return "compiled template code which can be cached";
-	}
+				<pre><code>/**
+ * Integrated template adapter for Jumplate
+ */
+var TemplateAdapter = {
 
-	async render(templatePath, layoutPath, data) {
-		return "Final HTML compiled and rendered just in time";
-	}
+	render: function render(templatePath, layoutPath, data, callback) {
+		callback(null, "Basic function. Compile and render view and return complete result.");
+	},
 
-	async renderCahed(compiledTemplate, data) {
-		return "final HTML from precompiled template";
-	}
-}</code></pre>
+	preCompile: function preCompile(templatePath, layoutPath, callback) {
+		callback(null, "If template engine contains precompilation which can be cached and reused later, return precompiled code.");
+	},
+
+	renderPreCompiled: function renderPreCompiled(preCompiledTemplate, data, callback) {
+		callback(null, "Process precompiled template and return final render.");
+	},
+
+	/**
+	 * Extension of template files
+	 */
+	extension: ".tpl",
+
+	/**
+	 * Tell that you implement preCompile and renderPreCompiled methods
+	 */
+	preCompilation: true
+};
+
+module.exports = TemplateAdapter;</code></pre>
 			</article>
 		</section>
 
@@ -1798,10 +1815,6 @@ module.exports = function(container) {
 				</span>
 			</p>
 
-			<blockquote>
-				These commands can be used in single (not nested) cycles, will be repaired later.
-			</blockquote>
-
 			<h3>Conditions</h3>
 			<article class="code">
 			<pre><code class="html">{if $x == "condition"}
@@ -1819,14 +1832,33 @@ module.exports = function(container) {
 				than use command <span class="inline-code">{loc Key.for.requested.translation}</span>
 				which will call your handler with given key as parameter.
 			</p>
+
+			<h3>Helpers</h3>
+			<p>
+				You can define own helpers, inline and block too. On class Jumplate
+				there are static methods <span class="inline-code">registerHelper(name, func)</span>
+				and <span class="inline-code">registerBlockHelper(name, func)</span>.
+			</p>
+
+			<pre><code class="javascript">Jumplate.registerHelper("link", function(text, url) {
+	return `&lt;a href="${url}">${text}&lt;/a>`;
+});</code></pre>
+
+			<p>Then you can use it in template like this.</p>
+
+			<pre><code class="html">{block menu}
+	{foreach $item in $menuItems}
+		{link($item.text, $item.url)}
+	{/foreach}
+{/block}</code></pre>
 		</section>
 
-		<section>
-			<h2 id="fold-jumbo-entity">Jumbo Entity</h2>
-			<p>
-				...
-			</p>
-		</section>
+		<!--<section>-->
+			<!--<h2 id="fold-jumbo-entity">Jumbo Entity</h2>-->
+			<!--<p>-->
+				<!--...-->
+			<!--</p>-->
+		<!--</section>-->
 	</section>
 </main>
 </body>
