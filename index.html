@@ -189,7 +189,8 @@
 				<li>integrated Inversion of Control - constructor Dependency Injection,</li>
 				<li>code can be changed while runtime,</li>
 				<li>unexpected errors are catched and logged, then process is restarted,</li>
-				<li>client-side micro framework automatically creating SPA without any client-side programming (soon),</li>
+				<li>client-side micro framework automatically creating SPA without any client-side programming (soon),
+				</li>
 				<li>fully configurable logging with log levels,</li>
 				<li>subdomains! More "modules" in one application accessible via subdomains,</li>
 				<li>a lot of things integrated but changeable thanks to Adapters,</li>
@@ -1072,12 +1073,12 @@ var TemplateAdapter = {
 };
 
 module.exports = TemplateAdapter;</code></pre>
-
-				<strong>templatePath</strong> is path to requested template. <strong>layoutPath</strong> is path
-				to layout, should be null. <strong>data</strong> is object you call view from controller with.
-				<strong>context</strong> is instance of controller for given request, you should want some extra data
-				from controller (eg. current user's language).
 			</article>
+
+			<strong>templatePath</strong> is path to requested template. <strong>layoutPath</strong> is path
+			to layout, should be null. <strong>data</strong> is object you call view from controller with.
+			<strong>context</strong> is instance of controller for given request, you should want some extra data
+			from controller (eg. current user's language).
 		</section>
 
 		<!-- Application -->
@@ -1895,41 +1896,48 @@ module.exports = TemplateAdapter;</code></pre>
 			</p>
 
 			<section>
-			<h3>Helpers</h3>
-			<p>
-				You can define own helpers, inline and block too. On class Jumplate
-				there are static methods <span class="inline-code">registerHelper(name, func)</span>
-				and <span class="inline-code">registerBlockHelper(name, func)</span>.
-			</p>
+				<h3>Helpers</h3>
+				<p>
+					You can define own helpers, inline and block too. On class Jumplate
+					there are static methods <span class="inline-code">registerHelper(name, func)</span>
+					and <span class="inline-code">registerBlockHelper(name, func)</span>.
+				</p>
 
-			<pre><code class="javascript">Jumplate.registerHelper("link", function(text, url) {
+				<article class="code">
+					<pre><code class="javascript">Jumplate.registerHelper("link", function(text, url) {
 	return `&lt;a href="${url}">${text}&lt;/a>`;
 });</code></pre>
+				</article>
 
-			<p>Then you can use it in template like this.</p>
+				<p>Then you can use it in template like this.</p>
 
-			<pre><code class="html">{block menu}
+				<article class="code">
+					<pre><code class="html">{block menu}
 	{foreach $item in $menuItems}
 		{link($item.text, $item.url)}
 	{/foreach}
 {/block}</code></pre>
+				</article>
 			</section>
 
 			<section>
 				<h3>Predefined helper</h3>
 
 				<p>In default Jumplate template adapter there are some predefined helpers which should help you with
-				some stuffs. There will be more helpers soon.</p>
+					some stuffs. There will be more helpers soon.</p>
 
 				<!-- FORM -->
 				<section>
-				<h4>Form</h4>
-				<p>
-					Helper <strong>form</strong> is block helper which create &lt;form> and &lt;/form> around your code.
-					The begining tag will look like <span class="inline-code">
+					<h4>Form</h4>
+					<p>
+						Helper <strong>form</strong> is block helper which create &lt;form> and &lt;/form> around your
+						code.
+						The begining tag will look like <span class="inline-code">
 					&lt;form method="POST" action="#" enctype="multipart/form-data"></span>
-				</p>
-				<pre><code class="html">{block content}
+					</p>
+
+					<article class="code">
+						<pre><code class="html">{block content}
 	&lt;h1>Registration&lt;/h1>
 	{form}
 		&lt;input type="text" name="email">
@@ -1937,6 +1945,7 @@ module.exports = TemplateAdapter;</code></pre>
 		&lt;input type="submit" name="send" value="Sign Up">
 	{/form}
 {/block}</code></pre>
+					</article>
 				</section>
 
 				<!-- LINK -->
@@ -1946,12 +1955,15 @@ module.exports = TemplateAdapter;</code></pre>
 						Helper <strong>link</strong> is inline helper which create url in same way as
 						<a href="#fold-base-controller-link">Jumbo.Base.Controller.link()</a> method.
 					</p>
-					<pre><code class="html">{block menu}
+
+					<article class="code">
+						<pre><code class="html">{block menu}
 	{foreach $item in $menuItems}
 		{* Will create eg. /page/nodejs -> PageController.actionNodejs() *}
 		&lt;a href='{link("Page", $item.section)}'>{$item.text}&lt;/a>
 	{/foreach}
 {/block}</code></pre>
+					</article>
 				</section>
 
 				<!-- APPLINK -->
@@ -1961,20 +1973,23 @@ module.exports = TemplateAdapter;</code></pre>
 						Helper <strong>applink</strong> is inline helper which create subapp url in same way as
 						<a href="#fold-base-controller-appLink">Jumbo.Base.Controller.appLink()</a> method.
 					</p>
-					<pre><code class="html">{block adminMenu}
+
+					<article class="code">
+						<pre><code class="html">{block adminMenu}
 	{* Will create eg. admin.domain.tld/page/new -> PageController.actionNew() in admin subapp *}
 	&lt;a href='{applink("admin", "Page", "new")}'>Create new page&lt;/a>
 	&lt;a href='{applink("admin", "User", "list")}'>List all users&lt;/a>
 {/block}</code></pre>
+					</article>
 				</section>
 			</section>
 		</section>
 
 		<!--<section>-->
-			<!--<h2 id="fold-jumbo-entity">Jumbo Entity</h2>-->
-			<!--<p>-->
-				<!--...-->
-			<!--</p>-->
+		<!--<h2 id="fold-jumbo-unimapperjs">UniMapperJS</h2>-->
+		<!--<p>-->
+		<!--...-->
+		<!--</p>-->
 		<!--</section>-->
 	</section>
 </main>
