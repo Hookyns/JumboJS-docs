@@ -86,12 +86,12 @@
 	<link rel="stylesheet" href="styles/agate.css">
 	<link rel="stylesheet" href="default.css">
 
-	<title>Jumbo Documentation</title>
+	<title>JumboJS Documentation</title>
 </head>
 <body>
 <header>
 	<img src="images/jumbo.png">
-	<h1>Jumbo</h1>
+	<h1>JumboJS</h1>
 
 	<div class="aside-nav">
 		<ul>
@@ -122,7 +122,7 @@
 				<a href="#fold-introduction">Introduction</a>
 
 				<ul>
-					<li><a href="#fold-about-jumbo">About Jumbo</a></li>
+					<li><a href="#fold-about-jumbo">About JumboJS</a></li>
 					<li><a href="#fold-MVC">MVC pattern</a></li>
 					<li><a href="#fold-IoC">IoC principle</a></li>
 					<li><a href="#fold-ORM">ORM technique</a></li>
@@ -172,16 +172,16 @@
 		<h1 id="fold-introduction">Introduction</h1>
 
 		<section>
-			<h2 id="fold-about-jumbo">About Jumbo</h2>
+			<h2 id="fold-about-jumbo">About JumboJS</h2>
 			<p>
-				Jumbo is fast modern enterprise level modular MVC framework for Node.js which focuses on bigger
+				JumboJS is fast modern enterprise level modular MVC framework for Node.js which focuses on bigger
 				applications
 				which needs stable massive structure; but it still stays quite thin enough for smaller applications.
 
 				...
 			</p>
 
-			<h3>Main Features of Jumbo</h3>
+			<h3>Main Features of JumboJS</h3>
 			<ul>
 				<li>No requires! Global lazy-loading namespace exists,</li>
 				<li>integrated Node.js clustering - multi core / CPU support,</li>
@@ -197,11 +197,12 @@
 				<li>sessions stored on disk and in memory for faster access,</li>
 				<li>integrated email sender (soon),</li>
 				<li>native async & await support,</li>
-				<li>high performance - 2 900 requests per second with one worker (2,33 GHz core),</li>
+				<li>high performance - 3 000 requests per second with one worker (2,33 GHz core),</li>
 				<li>
 					low dependecy - just few packages from 3rd party, it means that everything is made right
-					for JumboJS
+					for JumboJS,
 				</li>
+				<li>integrated globalization.</li>
 			</ul>
 
 			<h3>Framework structure</h3>
@@ -401,6 +402,11 @@ var applicationConfig = {
 	deployment: $cfg.Deployment.Development,
 
 	/**
+	 * For debuging; disable clustering and run app in one debugable process
+	 */
+	debugMode: false,
+
+	/**
 	 * Protocol setting
 	 * If you set HTTPS protocol specify privateKey and certificate paths
 	 */
@@ -475,6 +481,21 @@ var applicationConfig = {
 	},
 
 	/**
+	 * Allows you to use more languages (defined in URL right after first slash; eg. domain.tld/de/page/article/1)
+	 */
+	globalization: {
+		/**
+		 * Allow using languages
+		 */
+		enabled: true,
+
+		/**
+		 * Default language (used for URL without specified language )
+		 */
+		defaultLanguage: "en"
+	},
+
+	/**
 	 * Enable running tests before application start
 	 * Not implemented yet
 	 * @default true
@@ -522,11 +543,6 @@ var applicationConfig = {
 	 * @default 5 MB
 	 */
 	maxPostDataSize: 5e6,
-
-	/**
-	 * For debuging; disable clustering and run app in one debugable process
-	 */
-	debugMode: false,
 
 
 	// You can define your own settings here,.. it'll be available via Jumbo.Config
@@ -1032,7 +1048,7 @@ module.exports = function(container) {
  */
 var TemplateAdapter = {
 
-	render: function render(templatePath, layoutPath, data, callback) {
+	render: function render(templatePath, layoutPath, data, context, callback) {
 		callback(null, "Basic function. Compile and render view and return complete result.");
 	},
 
@@ -1040,7 +1056,7 @@ var TemplateAdapter = {
 		callback(null, "If template engine contains precompilation which can be cached and reused later, return precompiled code.");
 	},
 
-	renderPreCompiled: function renderPreCompiled(preCompiledTemplate, data, callback) {
+	renderPreCompiled: function renderPreCompiled(preCompiledTemplate, data, context, callback) {
 		callback(null, "Process precompiled template and return final render.");
 	},
 
@@ -1056,6 +1072,11 @@ var TemplateAdapter = {
 };
 
 module.exports = TemplateAdapter;</code></pre>
+
+				<strong>templatePath</strong> is path to requested template. <strong>layoutPath</strong> is path
+				to layout, should be null. <strong>data</strong> is object you call view from controller with.
+				<strong>context</strong> is instance of controller for given request, you should want some extra data
+				from controller (eg. current user's language).
 			</article>
 		</section>
 
@@ -1084,6 +1105,7 @@ module.exports = TemplateAdapter;</code></pre>
 	<a href="#fold-api-application-locator-setMainSubdomain">setMainSubdomain(subName)</a>;
 	<a href="#fold-api-application-locator-addSubdomain">addSubdomain(subName)</a>;
 	<a href="#fold-api-application-locator-addLocation">addLocation(locationName, location[, options = null[, subApp = null]])</a>;
+	<a href="#fold-api-application-locator-addUrlAlias">addUrlAlias(url, alias)</a>;
 }</code></pre>
 
 				<section class="method">
@@ -1139,6 +1161,19 @@ module.exports = TemplateAdapter;</code></pre>
 						<li><i>optional</i> <b>subApp : String</b> <em>
 							Name of subapp if you want to use this location only in given subapp
 						</em></li>
+					</ul>
+				</section>
+
+				<section class="method">
+					<h4 id="fold-api-application-locator-addUrlAlias">addUrlAlias(url, alias)</h4>
+					<p>
+						Create alias for some url. Eg. you have static file /public/robots.txt and you want this file
+						under url /robots.txt so then add url alias addUrlAlias("/public/robots.txt", "/robots.txt").
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>url : String</b> <em>Target URL</em></li>
+						<li><b>alias : String</b> <em>Alias for target URL</em></li>
 					</ul>
 				</section>
 			</section>
@@ -1756,7 +1791,9 @@ module.exports = TemplateAdapter;</code></pre>
 
 			<h3>Variables</h3>
 			All variables begin with <strong>$</strong> symbol.
-			Each variable can be printed as <span class="inline-code">{$variable}</span>
+			Each variable can be printed as <span class="inline-code">{$variable}</span>.
+			Output has escaped html entities (<, >, &, ", ').
+			If you want to print variable without escaping use <span class="inline-code">{!$variable}</span>.
 
 			It's possible to define variable right inside
 			template with <span class="inline-code">{var $x = new Date().toString()}</span>
