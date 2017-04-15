@@ -1101,12 +1101,24 @@ module.exports = TemplateAdapter;</code></pre>
 	static get ParamTypes: RegExp
 	static get instance: Locator
 
+	<a href="#fold-api-application-locator-setHost">setHost(host)</a>;
 	<a href="#fold-api-application-locator-setDelimiter">setDelimiter(delimiter)</a>;
 	<a href="#fold-api-application-locator-setMainSubdomain">setMainSubdomain(subName)</a>;
 	<a href="#fold-api-application-locator-addSubdomain">addSubdomain(subName)</a>;
 	<a href="#fold-api-application-locator-addLocation">addLocation(locationName, location[, options = null[, subApp = null]])</a>;
 	<a href="#fold-api-application-locator-addUrlAlias">addUrlAlias(url, alias)</a>;
 }</code></pre>
+
+				<section class="method">
+					<h4 id="fold-api-application-locator-setHost">setHost(host)</h4>
+					<p>
+						Set server hostname - used for subapp link creation
+					</p>
+					<h5>Params</h5>
+					<ul>
+						<li><b>host : String</b></li>
+					</ul>
+				</section>
 
 				<section class="method">
 					<h4 id="fold-api-application-locator-setDelimiter">setDelimiter(delimiter)</h4>
@@ -1414,7 +1426,8 @@ module.exports = TemplateAdapter;</code></pre>
 					<h4 id="fold-base-controller-appLink">appLink(subApp, controller, action[, slashParams[,
 						queryParams]])</h4>
 					<p>
-						Method create URL address for given location in given subapp.
+						Method create URL address for given location in given subapp. Host must be set in Locator, see
+						<a href="#fold-api-application-locator-setHost">Locator.setHost()</a>.
 					</p>
 					<h5>Params</h5>
 					<ul>
@@ -1933,9 +1946,24 @@ module.exports = TemplateAdapter;</code></pre>
 						<a href="#fold-base-controller-link">Jumbo.Base.Controller.link()</a> method.
 					</p>
 					<pre><code class="html">{block menu}
-    {foreach $item in $menuItems}
-        {link("Page", $item.section)} {* Will create eg. /page/nodejs -> PageController.actionNodejs() *}
-    {/foreach}
+	{foreach $item in $menuItems}
+		{* Will create eg. /page/nodejs -> PageController.actionNodejs() *}
+		&lt;a href='{link("Page", $item.section)}'>{$item.text}&lt;/a>
+	{/foreach}
+{/block}</code></pre>
+				</section>
+
+				<!-- APPLINK -->
+				<section>
+					<h4>Applink</h4>
+					<p>
+						Helper <strong>applink</strong> is inline helper which create subapp url in same way as
+						<a href="#fold-base-controller-appLink">Jumbo.Base.Controller.appLink()</a> method.
+					</p>
+					<pre><code class="html">{block adminMenu}
+	{* Will create eg. admin.domain.tld/page/new -> PageController.actionNew() in admin subapp *}
+	&lt;a href='{applink("admin", "Page", "new")}'>Create new page&lt;/a>
+	&lt;a href='{applink("admin", "User", "list")}'>List all users&lt;/a>
 {/block}</code></pre>
 				</section>
 			</section>
