@@ -17,12 +17,9 @@
 		}
 
 		function gotoFold(el, event) {
-			event = event || window.event;
-			event.preventDefault();
-
 			var fold = el.href.slice(el.href.lastIndexOf("#"));
 
-			$("body").animate({
+			$("html, body").animate({
 				scrollTop: $(fold).offset().top - 80
 			});
 
@@ -41,8 +38,12 @@
 
 		$(function () {
 			$("a").each(function (i, el) {
-				if (el.href.indexOf("#") == -1) return;
-				$(el).attr("onclick", "gotoFold(this);closeMenuOnMobile();");
+				if (el.href.indexOf("#") === -1) return;
+				$(el).on("click", function(e) {
+					e.preventDefault();
+					gotoFold(this, e);
+					closeMenuOnMobile();
+				});
 			});
 
 			headlines = $("main").find("h1, h2");
@@ -55,7 +56,7 @@
 		$(document).on("scroll", function () {
 			if (!headlines) return;
 
-			var bodyScroll = $("body").scrollTop();
+			var bodyScroll = $("html, body").scrollTop();
 			var $curSection;
 			var curSectionOffset = 0;
 
@@ -64,7 +65,7 @@
 				var offset = $el.offset().top;
 				var headlineId = $el.attr("id");
 
-				if (offset - bodyScroll - 100 < 0 && headlineId) {
+				if (headlineId && offset - bodyScroll - 100 < 0) {
 					if (offset > curSectionOffset) {
 						$curSection = $el;
 						curSectionOffset = offset;
@@ -72,7 +73,7 @@
 				}
 			});
 
-			if (!curentSectionId || ($curSection && $curSection.attr("id") != curentSectionId)) {
+			if (!curentSectionId || ($curSection && $curSection.attr("id") !== curentSectionId)) {
 				if ($curentSection) $curentSection.removeClass("cur-section");
 
 				curentSectionId = $curSection.attr("id");
@@ -1199,18 +1200,18 @@ module.exports = TemplateAdapter;</code></pre>
 
 				<h4>Class synopsis</h4>
 				<pre class="interface"><code class="javascript">class Request {
-	this.request: IncomingMessage; // Original request
-	this.response: ServerResponse; // Original response
-	this.subApp: tring; // Name of subapp
-	this.controller: string; // Name of controller
-	this.action: string; // Name of action
-	this.language: string; // Shortcut of current user's language
-	this.params: Array; // Params from URL (query params and slash params)
-	this.body = {{fields: {}, files: {}} | null};
-	this.header: {"Content-Type": "text/html"};
-	this.noCache: bool;
-	this.sessionId: string;
-	this.beginTime: Date
+	request: IncomingMessage; // Original request
+	response: ServerResponse; // Original response
+	subApp: tring; // Name of subapp
+	controller: string; // Name of controller
+	action: string; // Name of action
+	language: string; // Shortcut of current user's language
+	params: Array; // Params from URL (query params and slash params)
+	body = {{fields: {}, files: {}} | null};
+	header: {"Content-Type": "text/html"};
+	noCache: bool;
+	sessionId: string;
+	beginTime: Date
 
 	<a href="#fold-api-application-request-setDelimiter">setCookie(name, value[, expire[, domain[, path]]])</a>;
 	<a href="#fold-api-application-request-getCookies">getCookies()</a>;
