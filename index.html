@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
@@ -11,7 +11,6 @@
 	<script src="scripts/default.js"></script>
 
 	<link rel="stylesheet" href="styles/vs2015.css">
-	<!--<link rel="stylesheet" href="styles/agate.css">-->
 	<link rel="stylesheet" href="default.css">
 
 	<title>JumboJS Documentation</title>
@@ -89,7 +88,8 @@
 
 					<ul>
 						<li><a href="#fold-jumplate">Jumplate</a></li>
-						<!--<li><a href="#fold-jumbo-entity">Jumbo Entity</a></li>-->
+						<li><a href="#fold-ujumbo">uJumbo</a></li>
+						<li><a href="#fold-unimapperjs">UniMaperJS</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -218,7 +218,8 @@
 			<section>
 				<h2 id="fold-installation">Installation</h2>
 				<p>
-					The best way how to start with <strong>JumboJS</strong> is to install <strong>jumbo-developer</strong>
+					The best way how to start with <strong>JumboJS</strong> is to install
+					<strong>jumbo-developer</strong>
 					package and use it to create new project.
 
 					So first install <strong>jumbo-developer</strong> via <strong>npm</strong>
@@ -1085,7 +1086,8 @@ module.exports = function(container) {
 			<section>
 				<h2 id="fold-adapters">Jumbo.Adapters</h2>
 				<p>
-					<strong>JumboJS</strong> is quite modular framework, it integrates many features but almost everything
+					<strong>JumboJS</strong> is quite modular framework, it integrates many features but almost
+					everything
 					can be changed thanks <strong>adapters</strong>. Adapters are some classes which makes interfaces
 					over some features.
 				</p>
@@ -1303,7 +1305,8 @@ module.exports = TemplateAdapter;</code></pre>
     <a href="#fold-api-application-request-getCookies">getCookies()</a>;
     <a href="#fold-api-application-request-getCookie">getCookie(name)</a>;
 	<a href="#fold-api-application-request-getIP">getIP()</a>;
-}</code></pre></article>
+}</code></pre>
+					</article>
 
 					<section class="method">
 						<h4 id="fold-api-application-request-isXhr">
@@ -1366,7 +1369,8 @@ module.exports = TemplateAdapter;</code></pre>
 	<a href="#fold-api-application-request-setCookie">setCookie(name, value[, expire[, domain[, path]]])</a>;
 	<a href="#fold-api-application-request-unsetCookie">unsetCookie(name)</a>;
 	<a href="#fold-api-application-request-redirectURL">redirectURL(url[, code])</a>;
-}</code></pre></article>
+}</code></pre>
+					</article>
 
 					<section class="method">
 						<h4 id="fold-api-application-request-setCookie">
@@ -1438,7 +1442,8 @@ module.exports = TemplateAdapter;</code></pre>
 	<a href="#fold-base-controller-returnError">error(message[, statusCode])</a>;
 	<a href="#fold-base-controller-returnFileDownload">fileDownload(filePath[, newName[, contentType]])</a>;
 	<a href="#fold-base-controller-redirect">redirect(url)</a>;
-}</code></pre></article>
+}</code></pre>
+					</article>
 
 					<section class="method">
 						<h4 id="fold-base-controller-exit">exit()</h4>
@@ -1451,13 +1456,15 @@ module.exports = TemplateAdapter;</code></pre>
 						<h4 id="fold-base-controller-view">view([viewOrData[, data]])</h4>
 						<p>
 							Ends request and return default or given view with given data. This action automatically
-							handle double-sided rendering header and return required type (view, template, data, partial)
+							handle double-sided rendering header and return required type (view, template, data,
+							partial)
 						</p>
 						<h5>Params</h5>
 						<ul>
 							<li>
 								<i>optional</i> <b>viewOrData : String | Object</b>
-								<em>Name of specific view or just data if view is default (if match with action name)</em>
+								<em>Name of specific view or just data if view is default (if match with action
+									name)</em>
 							</li>
 							<li><i>optional</i> <b>data : Object</b> <em>Object with data for view</em></li>
 						</ul>
@@ -1472,7 +1479,8 @@ module.exports = TemplateAdapter;</code></pre>
 						<ul>
 							<li>
 								<i>optional</i> <b>viewOrData : String | Object</b>
-								<em>Name of specific view or just data if view is default (if match with action name)</em>
+								<em>Name of specific view or just data if view is default (if match with action
+									name)</em>
 							</li>
 							<li><i>optional</i> <b>data : Object</b> <em>Object with data for view</em></li>
 						</ul>
@@ -1547,7 +1555,8 @@ module.exports = TemplateAdapter;</code></pre>
 						<h4 id="fold-base-controller-returnError">error(message[, statusCode = 500[, error]])</h4>
 						<p>
 							Ends request with error result. HTML file in /data/errors with given statusCode will be sent
-							to client. If file not exists, plain text message "We're sorry but some error occurs." will be shown.
+							to client. If file not exists, plain text message "We're sorry but some error occurs." will
+							be shown.
 							Error object's details will be showed in browser in development mode.
 						</p>
 						<h5>Params</h5>
@@ -1557,12 +1566,14 @@ module.exports = TemplateAdapter;</code></pre>
 							</li>
 							<li><i>optional</i> <b>statusCode : Number</b> <i>default 500</i></li>
 							<li><i>optional</i> <b>error : Error | Exception</b> Error object which details will be
-								showed in browser in development mode</li>
+								showed in browser in development mode
+							</li>
 						</ul>
 					</section>
 
 					<section class="method">
-						<h4 id="fold-base-controller-returnFileDownload">fileDownload(filePath[, newName[, contentType]])</h4>
+						<h4 id="fold-base-controller-returnFileDownload">fileDownload(filePath[, newName[,
+							contentType]])</h4>
 						<p>
 							Sends file to client for download
 						</p>
@@ -1581,7 +1592,9 @@ module.exports = TemplateAdapter;</code></pre>
 						</p>
 						<h5>Params</h5>
 						<ul>
-							<li><b>url : Url</b> Instance of Jumbo.Utils.Url which is in controller under <strong>this.url</strong> getter</li>
+							<li><b>url : Url</b> Instance of Jumbo.Utils.Url which is in controller under <strong>this.url</strong>
+								getter
+							</li>
 						</ul>
 					</section>
 
@@ -1605,7 +1618,8 @@ module.exports = TemplateAdapter;</code></pre>
 	<a href="#fold-api-ioc-dicontainer-register">register(expr, as)</a>;
 	<a href="#fold-api-ioc-dicontainer-resolve">resolve(name)</a>;
 	<a href="#fold-api-ioc-dicontainer-resolveUnregistered">resolveUnregistered(type)</a>;
-}</code></pre></article>
+}</code></pre>
+					</article>
 
 					<section class="method">
 						<h4 id="fold-api-ioc-dicontainer-register">register(expr, as)</h4>
@@ -1615,7 +1629,8 @@ module.exports = TemplateAdapter;</code></pre>
 						</p>
 						<h5>Params</h5>
 						<ul>
-							<li><b>expr : Function</b> <em>Class or arrow function returning class or some object</em></li>
+							<li><b>expr : Function</b> <em>Class or arrow function returning class or some object</em>
+							</li>
 							<li><b>as : String</b> <em>Registration name of service</em></li>
 						</ul>
 					</section>
@@ -1664,7 +1679,8 @@ module.exports = TemplateAdapter;</code></pre>
 					<article class="code"><pre class="interface"><code class="javascript">class Scope {
 	<a href="#fold-api-ioc-scope-resolve">resolve(name)</a>;
 	<a href="#fold-api-ioc-scope-resolveUnregistered">resolveUnregistered(type)</a>;
-}</code></pre></article>
+}</code></pre>
+					</article>
 
 					<section class="method">
 						<h4 id="fold-api-ioc-scope-resolve">resolve(name)</h4>
@@ -1720,7 +1736,8 @@ module.exports = TemplateAdapter;</code></pre>
 	static <a href="#fold-log-error">error(message[, type[, level]])</a>;
 	static <a href="#fold-log-warning">warning(message[, type[, level]])</a>;
 	static <a href="#fold-log-line">line(message[, type[, level]])</a>;
-}</code></pre></article>
+}</code></pre>
+				</article>
 
 				<section class="method">
 					<h4 id="fold-log-logTypes">get LogTypes()</h4>
@@ -1773,19 +1790,19 @@ module.exports = TemplateAdapter;</code></pre>
 
 			<!-- Validation -->
 			<!--<section>-->
-				<!--<h2 id="fold-validation">Jumbo.Validation<sub>namespace</sub></h2>-->
+			<!--<h2 id="fold-validation">Jumbo.Validation<sub>namespace</sub></h2>-->
 
-				<!--<h3>Validator<sub>class</sub></h3>-->
+			<!--<h3>Validator<sub>class</sub></h3>-->
 
-				<!--<h3>PropertyValidator<sub>class</sub></h3>-->
+			<!--<h3>PropertyValidator<sub>class</sub></h3>-->
 
 			<!--</section>-->
 
 			<!-- Utils -->
 			<section>
-			<h2 id="fold-utils">Jumbo.Utils<sub>namespace</sub></h2>
+				<h2 id="fold-utils">Jumbo.Utils<sub>namespace</sub></h2>
 
-			<h3>Url<sub>class</sub></h3>
+				<h3>Url<sub>class</sub></h3>
 				<p>
 					Url is class which helps you create URLs. It copy locale, protocol, host and controller
 					from given request.
@@ -1801,7 +1818,8 @@ module.exports = TemplateAdapter;</code></pre>
     <a href="#fold-utils-url-locale">locale(locale)</a>;
     <a href="#fold-utils-url-location">location(location)</a>;
     <a href="#fold-utils-url-getUrl">getUrl()</a>;
-}</code></pre></article>
+}</code></pre>
+				</article>
 
 				<section class="method">
 					<h4 id="fold-utils-url-constructor">constructor(request)</h4>
@@ -2056,12 +2074,105 @@ module.exports = TemplateAdapter;</code></pre>
 				</section>
 			</section>
 
-			<!--<section>-->
-			<!--<h2 id="fold-jumbo-unimapperjs">UniMapperJS</h2>-->
-			<!--<p>-->
-			<!--...-->
-			<!--</p>-->
-			<!--</section>-->
+
+
+			<section>
+				<h2 id="fold-ujumbo">uJumbo</h2>
+				<p>
+					<strong>uJumbo</strong> is client part of JumboJS.
+					This micro-framework allows you to automate client side SPA creation.
+					You just create uJumbo.Controller, give it content selector and that's all, your web is now SPA.
+					See <a href="https://github.com/Hookyns/ujumbo">uJumbo Repository</a>
+				</p>
+
+				<h3>Example Controller</h3>
+				<article class="code"><pre><code>(function(scope) {
+	if (scope.AppController) return;
+
+	var AppController = scope.AppController = class extends uJumbo.Controller {
+		constructor() {
+			super("body"); // Context selector
+		}
+
+		onInit() {
+			console.log("Called on app init", arguments);
+		}
+
+		onBeforeNavigate(headers) {
+			console.log("Called before navigatin", arguments)
+			// return false; -> as prevent default
+		}
+
+		onNavigate(error, response) {
+			if (error) {
+				console.error(error);
+				alert(error.message);
+			}
+
+			console.log("Called after navigation", arguments)
+		}
+
+		onPopState(state) {
+			console.log("Called on browser BACK", arguments)
+		}
+
+		onBeforeFormSubmit(data, headers) {
+			console.log("Called before form submit", arguments)
+			// return false; -> as prevent default
+		}
+
+		onFormSubmit(error, response) {
+			if (error) {
+				alert(error.message);
+			}
+
+			console.log("Called after form response received", arguments)
+		}
+
+		myAction(hello) {
+			alert(hello);
+		}
+	};
+
+	scope.appCtrl = new AppController();
+})(window);</code></pre></article>
+
+				<p>
+					As you can see, there are some on[Something] methods in the controller. That's optional handlers.
+					There is method <strong>myAction</strong> too. It's yours defined method, which can be called from
+					controller itself or from view by data-j-on events.
+				</p>
+
+				<h3>View Example</h3>
+				<article class="code"><pre><code>&lt;form>
+	&lt;button data-j-onClick="myAction('Hello World')">Say Hello.&lt;/button>
+&lt;/form></code></pre></article>
+
+			</section>
+
+
+
+			<section>
+				<h2 id="fold-unimapperjs">UniMapperJS</h2>
+				<p>
+					<strong>UniMapperJS</strong> is <strong>JumboJS</strong>'s default ORM.
+					This ORM is based on Entity Framework from .NET. For queries you use JS functions and expressions
+					same as you do with Array. See <a href="https://github.com/Hookyns/unimapperjs">UniMapperJS</a>.
+				</p>
+
+				<h3>Example query</h3>
+				<article class="code"><pre><code>// Students their name starts with 'P' or ends with 's'
+let startsWith = "P";
+let students = await Student.getAll()
+	.filter(s => s.name.startsWith($) || s.name.endsWith("s"), startsWith)
+	.sort(s => s.name)
+	.slice(3, 8) // limit 5, skip 3
+	.map(s => ({
+		id: s.id,
+		name: s.name
+	}))
+	.exec();</code></pre></article>
+			</section>
 		</section>
 	</main>
 </body>
