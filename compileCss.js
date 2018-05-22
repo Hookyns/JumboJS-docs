@@ -39,13 +39,13 @@ function compileLessFile(file) {
 	});
 }
 
-$fs.watch(cssPath, (event, fileName) => {
-	if (fileName.slice(-5) != ".less") {
+$fs.watch(cssPath, function (event, fileName) {
+	if (fileName.slice(-5) !== ".less") {
 		return;
 	}
 
 	// Cuz some systems emit more messages for one event
-	setTimeout(() => {
+	setTimeout(function() {
 		// Windows emit rename for change so all event types must be accepted
 		if ((nextChangeAfter != null && (new Date()).getTime() < nextChangeAfter)) return;
 
